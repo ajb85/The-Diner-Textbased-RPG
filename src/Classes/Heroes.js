@@ -5,5 +5,6 @@ export default class Hero {
     this.intel = attrs.intel;
     this.luck = attrs.luck;
     this.name = attrs.name;
+    this.hp = 100;
   }
 }
