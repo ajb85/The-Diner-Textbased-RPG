@@ -1,9 +1,9 @@
 {
   "intro": {
-    "h1": "Welcome to the Diner",
+    "h1": "Welcome to The Diner",
     "p": "What's your name?\nIt's always good to know in case of emergencies"
   },
   "badLogin": {
-    "p": "Sorry, we already have someone with that name\nIt's first come, first serve\nHow about a nickname you go by?"
+    "p": "Sorry, we already have someone with that name\nIt's first come, first serve here\nHow about a nickname you go by?"
   }
 }

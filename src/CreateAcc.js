@@ -81,6 +81,7 @@ export default class CreateAcc extends Component {
               onChange={this.onNameInputChange}
               placeholder="So, what's your name?"
               value={this.state.name}
+              autofocus="true"
             />
             {submitBtn}
           </div>
