@@ -1,0 +1,40 @@
+.selectChar {
+  div {
+    padding: 0;
+  }
+  div.textSide {
+    .flexAlign(space-around);
+    flex-direction: row;
+  }
+  div.statContainer {
+    width: 80%;
+  }
+  div.charBlock {
+    max-width: 175px;
+    width: 100%;
+    margin: 0 5px;
+    height: 30vh;
+    background: @primaryText;
+    color: @secondaryText;
+    .flexAlign(space-evenly);
+    flex-direction: column;
+
+    h2 {
+      font-size: 1.8rem;
+      text-decoration: underline;
+    }
+    p {
+      padding: 0;
+    }
+    div.stat {
+      .flexAlign(space-between);
+      flex-direction: row;
+      width: 100%;
+      padding: 5px;
+      width: 90%;
+    }
+    button {
+      .defaultSubmitBtn(110px, 30px);
+    }
+  }
+}

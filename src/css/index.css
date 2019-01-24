@@ -1,0 +1,312 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+h2 {
+  font-size: 3.2rem;
+}
+h3 {
+  font-size: 2.8rem;
+}
+p {
+  font-size: 1.6rem;
+  line-height: 1.4;
+}
+.container {
+  max-width: 1300px;
+  width: 100%;
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+.createAcc section,
+.selectChar section {
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+@media (max-width: 760px) {
+  .createAcc section,
+  .selectChar section {
+    flex-direction: column;
+  }
+}
+.createAcc div,
+.selectChar div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+}
+.createAcc div.textSide,
+.selectChar div.textSide {
+  border-right: 1px solid white;
+  height: 100vh;
+  width: 50%;
+}
+@media (max-width: 760px) {
+  .createAcc div.textSide,
+  .selectChar div.textSide {
+    border-right: transparent;
+    border-bottom: 1px solid white;
+    width: 100%;
+    height: 50vh;
+  }
+}
+.createAcc div.inputSide,
+.selectChar div.inputSide {
+  width: 50%;
+}
+@media (max-width: 760px) {
+  .createAcc div.inputSide,
+  .selectChar div.inputSide {
+    width: 100%;
+    height: 50vh;
+  }
+}
+.createAcc h1,
+.selectChar h1 {
+  color: #fff;
+  font-size: 3.6rem;
+  padding-bottom: 15px;
+  text-align: center;
+}
+@media (max-width: 760px) {
+  .createAcc h1,
+  .selectChar h1 {
+    font-size: 4rem;
+  }
+}
+.createAcc p,
+.selectChar p {
+  padding: 3px;
+  font-size: 1.7rem;
+  text-align: center;
+}
+.createAcc input,
+.selectChar input {
+  margin: 10px;
+  width: 300px;
+  height: 60px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+.createAcc button.realBtn,
+.selectChar button.realBtn {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 300px;
+  height: 40px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.5s, color 0.5s;
+}
+.createAcc button.realBtn:hover,
+.selectChar button.realBtn:hover {
+  background-color: #fff;
+  color: #000;
+}
+.createAcc button.noBtn,
+.selectChar button.noBtn {
+  background: transparent;
+  width: 300px;
+  height: 40px;
+  border: transparent;
+  outline: transparent;
+}
+.selectChar div {
+  padding: 0;
+}
+.selectChar div.textSide {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+.selectChar div.statContainer {
+  width: 80%;
+}
+.selectChar div.charBlock {
+  max-width: 175px;
+  width: 100%;
+  margin: 0 5px;
+  height: 30vh;
+  background: #fff;
+  color: #000;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.selectChar div.charBlock h2 {
+  font-size: 1.8rem;
+  text-decoration: underline;
+}
+.selectChar div.charBlock p {
+  padding: 0;
+}
+.selectChar div.charBlock div.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  padding: 5px;
+  width: 90%;
+}
+.selectChar div.charBlock button {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 110px;
+  height: 30px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.5s, color 0.5s;
+}
+.selectChar div.charBlock button:hover {
+  background-color: #fff;
+  color: #000;
+}

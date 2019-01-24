@@ -1,0 +1,29 @@
+// Mixins Here
+
+// Align items as a flex box
+// .flexAlign(space-between);
+.flexAlign(@justify: center, @align: center) {
+  display: flex;
+  justify-content: @justify;
+  align-items: @align;
+}
+// Create a black button with hover effects to
+// reverse background and text colors;
+// .defaultSubmitBtn(200px, 40px) {
+.defaultSubmitBtn(@btnWidth, @btnHeight) {
+  background-color: @primaryBG;
+  color: @primaryText;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: @btnWidth;
+  height: @btnHeight;
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.5s, color 0.5s;
+
+  &:hover {
+    background-color: @primaryText;
+    color: @primaryBG;
+  }
+}
