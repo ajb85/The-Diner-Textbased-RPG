@@ -1,16 +1,30 @@
 import React, { Component } from "react";
+import CreateCombatButton from "./HelperComps/CreateCombatButton.js";
+import CreateUserList from "./HelperComps/CreateUserList.js";
+
 // props: loadPage, char
 export default class Diner extends Component {
   constructor(props) {
     super(props);
+
+    //binding 'this' to all my functions so I don't have to when they're invoked
     this.handleTyping = this.handleTyping.bind(this);
     this.handleChatSubmit = this.handleChatSubmit.bind(this);
     this.fakeServer = this.fakeServer.bind(this);
     this.receiveChat = this.receiveChat.bind(this);
     this.receiveUserList = this.receiveUserList.bind(this);
-    this.selectUser = this.selectUser.bind(this);
+    this.challengeUser = this.challengeUser.bind(this);
+    this.cancelChallenge = this.cancelChallenge.bind(this);
+    this.receiveRequestAnswer = this.receiveRequestAnswer.bind(this);
 
-    this.state = { typing: "", chatlog: "", userList: [], selectedUser: "" };
+    this.state = {
+      typing: "",
+      chatlog: "",
+      userList: [],
+      selected: "",
+      challenging: "",
+      aggressors: []
+    };
   }
   componentDidMount() {
     //Fake userlist generation
@@ -48,6 +62,11 @@ export default class Diner extends Component {
         "it, right?"
       ].sort()
     );
+
+    this.receiveRequest("Tonya");
+  }
+  updateStateConditions(conditionUpdate) {
+    this.setState({ conditionUpdate });
   }
   handleTyping(e) {
     const maxCharLimit = 164;
@@ -70,19 +89,29 @@ export default class Diner extends Component {
     chatlog += "\n" + message + "\n";
     this.setState({ chatlog });
   }
-  receiveUserList(list) {
-    const userList = list.map(user => (
-      <p className="username" onClick={this.selectUser}>
-        {user}
-      </p>
-    ));
+  receiveUserList(userList) {
     this.setState({ userList });
   }
-  selectUser(e) {
-    console.log(e.target.value);
+  receiveRequest(res) {
+    // Save aggressor names in an array so they can be queued and index zero
+    // highlighted in the user list
+    let { aggressors } = this.state;
+    aggressors.push(res);
+    this.setState({ aggressors: [...aggressors] });
+  }
+  receiveRequestAnswer(res) {
+    if (res) {
+      // Load fight
+    } else {
+      //Untested
+      //moved to helper --> this.cancelChallenge();
+    }
   }
 
   render() {
+    const { aggressors, selected, challenging } = this.state;
+    const stateConditions = { aggressors, selected, challenging };
+
     return (
       <div className="container diner">
         <div className="chatContainer">
@@ -97,8 +126,19 @@ export default class Diner extends Component {
           </form>
         </div>
         <div className="buttonsAndList">
-          <div className="users">{this.state.userList}</div>
-          <div className="actionButton">3</div>
+          <div className="users">
+            <CreateUserList
+              userList={this.state.userList}
+              stateConditions={stateConditions}
+              updateStateCondition={this.updateStateCondition}
+            />
+          </div>
+          <div className="actionButton">
+            <CreateCombatButton
+              stateConditions={stateConditions}
+              updateStateCondition={this.updateStateConditions}
+            />
+          </div>
         </div>
       </div>
     );

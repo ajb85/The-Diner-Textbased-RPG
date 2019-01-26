@@ -11,8 +11,8 @@
 // reverse background and text colors;
 // .defaultSubmitBtn(200px, 40px) {
 .defaultSubmitBtn(@btnWidth, @btnHeight) {
-  background-color: @primaryBG;
-  color: @primaryText;
+  background-color: @bg1;
+  color: @font1;
   border: 1px solid black;
   border-radius: 5px;
   width: @btnWidth;
@@ -23,7 +23,19 @@
   transition: background-color 0.5s, color 0.5s;
 
   &:hover {
-    background-color: @primaryText;
-    color: @primaryBG;
+    background-color: @font1;
+    color: @bg1;
+  }
+}
+
+// Style a button to appear disabled
+.styleDisabledButton(@bgColor:@bg1, @fontColor:@font1) {
+  background-color: lighten(@bgColor, 40%);
+  color: lighten(@fontColor, 40%);
+
+  &:focus,
+  &:hover {
+    background-color: lighten(@bgColor, 40%);
+    color: lighten(@fontColor, 40%);
   }
 }

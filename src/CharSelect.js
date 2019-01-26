@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import textData from "./data/charSelect.json";
 import gFunc from "./GlobalFunctions.js";
 import Hero from "./Classes/Heroes.js";
-import Diner from "./Diner.js";
+import GamePageMgr from "./PageManagers/GamePageMgr.js";
 // Props = {name, loadPage}
 export default class CharSelect extends Component {
   constructor(props) {
@@ -56,7 +56,7 @@ export default class CharSelect extends Component {
     const charKey = e.target.dataset.char;
     const selection = this.state.chars[charKey];
     this.props.loadPage(
-      <Diner loadPage={this.props.loadPage} char={selection} />
+      <GamePageMgr loadPage={this.props.loadPage} char={selection} />
     );
   }
   render() {
