@@ -30,12 +30,14 @@
 
 // Style a button to appear disabled
 .styleDisabledButton(@bgColor:@bg1, @fontColor:@font1) {
-  background-color: lighten(@bgColor, 40%);
-  color: lighten(@fontColor, 40%);
+  background-color: lighten(@bgColor, 50%);
+  color: darken(@fontColor, 50%);
+  font-style: italic;
+  border: 1px solid darken(@fontColor, 50%);
 
-  &:focus,
-  &:hover {
-    background-color: lighten(@bgColor, 40%);
-    color: lighten(@fontColor, 40%);
-  }
+  // &:focus,
+  // &:hover {
+  //   background-color: lighten(@bgColor, 50%);
+  //   color: lighten(@fontColor, 50%);
+  // }
 }

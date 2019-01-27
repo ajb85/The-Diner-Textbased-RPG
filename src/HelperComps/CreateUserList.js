@@ -1,59 +1,94 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
 // !!!!!!!!! This file is currently not working.  It's a copy paste of old code and needs to be updated !!!!!!!!!!!!!!!!
 
-
-
 /* props: userList
           stateConditions:{selected, challenging, aggressors}
-          callbacks: {selectUser, challengeUser, cancelChallenge}*/
+          updateStateCondition*/
 export default class CreateUserList extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-
-    this.selectUser=this.selectUser.bind(this);
+    this.selectUser = this.selectUser.bind(this);
+    //this.selectChallenging = this.selectChallenging.bind(this);
+    this.declineFight = this.declineFight.bind(this);
   }
 
   selectUser(e) {
-    let { selected, challenging } = this.state;
-    // Remove highlight from last selected user UNLESS they were challenging
-    // note: selected only exists here if the last time this function was ran
-    // someone was selected
-    // Read the follow as: "if someone was selected last time and they weren't
-    // challenging then reset their className"
-    if (selected && selected !== challenging) {
-      selected.className = "";
+    let selected = "";
+    if (this.props.stateConditions.selected !== e.target.innerHTML) {
+      selected = e.target.innerHTML;
     }
-    // For a new selected user, highlight its background
-    // Read: if the last target isn't the same as the new one
-    if (selected !== e.target && e.target !== challenging) {
-      e.target.className += "selected";
-      this.setState({ selected: e.target });
-      // If its the same target as before but they haven't been challenge,
-      // deselect them.  If they've been challenging, we will not change their
-      // class from selecting users
-    } else if (selected === e.target && selected !== challenging) {
-      selected.className = "";
-      this.setState({ selected: "" });
-    }
+    this.props.updateStateCondition("selected", selected);
   }
-render(){
-  let userList = this.props.stateConditions.userList.map(user => {
-    // React won't let me create an element then add a class later
-    // so...sorry DRY, have to write it twice :(
-    if(this.props.stateConditions.aggressors && this.props.stateConditions.aggressors[0] === user){
-      // Create with "aggressor" class
-      return (<p className="aggressor" onClick={this.selectUser}>
-        {user}
-      </p>);
-    }
-    // Create with no class if not the current aggressor
-    return (<p onClick={this.selectUser}>
-      {user}
-    </p>);
-  });
-  } // end if
-  return (userList);
-}
+  declineFight() {
+    // FAKE tell aggressive user fight was declined
+    let aggressors = [...this.props.stateConditions.aggressors].shift();
+    this.props.updateStateCondition("aggressors", aggressors);
+  }
+  acceptFight() {
+    // FAKE tell aggressive user fight was accepted, begin fight
+    //begin fight
+  }
+  render() {
+    const { selected, challenging, aggressors } = this.props.stateConditions;
+    let userList = this.props.userList.map((user, i) => {
+      // React won't let an element be created then edited so rather than create it
+      // and assign a class, I'm just creating it with different classes.
+      switch (user) {
+        // case user === challenging && user === selected:
+        //   return (
+        //     <p
+        //       key={i}
+        //       onClick={this.selectUser}
+        //       className="challenging selected"
+        //     >
+        //       {user}
+        //     </p>
+        //   );
+        //   break;
+        case challenging:
+          return (
+            <p key={i} onClick={this.selectUser} className="challenging">
+              {user}
+            </p>
+          );
+          break;
+        // case user === aggressors[0] && user === selected:
+        //   return (
+        //     <p key={i} onClick={this.selectUser} className="aggressor selected">
+        //       {user}
+        //     </p>
+        //   );
+        //   break;
+        case aggressors[0]:
+          return (
+            <div className="aggressor">
+              <p key={i} onClick={this.selectUser}>
+                {user}
+              </p>
+              <div>
+                <button>✓</button>{" "}
+                <button onClick={this.declineFight}>X</button>
+              </div>
+            </div>
+          );
+          break;
 
+        case selected:
+          return (
+            <p key={i} onClick={this.selectUser} className="selected">
+              {user}
+            </p>
+          );
+          break;
+        default:
+          return (
+            <p key={i} onClick={this.selectUser}>
+              {user}
+            </p>
+          );
+      }
+    });
+    return userList;
+  }
 }

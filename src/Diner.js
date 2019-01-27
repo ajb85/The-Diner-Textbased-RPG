@@ -13,9 +13,8 @@ export default class Diner extends Component {
     this.fakeServer = this.fakeServer.bind(this);
     this.receiveChat = this.receiveChat.bind(this);
     this.receiveUserList = this.receiveUserList.bind(this);
-    this.challengeUser = this.challengeUser.bind(this);
-    this.cancelChallenge = this.cancelChallenge.bind(this);
     this.receiveRequestAnswer = this.receiveRequestAnswer.bind(this);
+    this.updateStateCondition = this.updateStateCondition.bind(this);
 
     this.state = {
       typing: "",
@@ -65,8 +64,8 @@ export default class Diner extends Component {
 
     this.receiveRequest("Tonya");
   }
-  updateStateConditions(conditionUpdate) {
-    this.setState({ conditionUpdate });
+  updateStateCondition(condition, value) {
+    this.setState({ [condition]: value });
   }
   handleTyping(e) {
     const maxCharLimit = 164;
@@ -136,7 +135,7 @@ export default class Diner extends Component {
           <div className="actionButton">
             <CreateCombatButton
               stateConditions={stateConditions}
-              updateStateCondition={this.updateStateConditions}
+              updateStateCondition={this.updateStateCondition}
             />
           </div>
         </div>
