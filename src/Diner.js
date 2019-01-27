@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import CreateCombatButton from "./HelperComps/CreateCombatButton.js";
 import CreateUserList from "./HelperComps/CreateUserList.js";
 
-// props: loadPage, char
+// props: changeGame, char
 export default class Diner extends Component {
   constructor(props) {
     super(props);
@@ -130,6 +130,8 @@ export default class Diner extends Component {
               userList={this.state.userList}
               stateConditions={stateConditions}
               updateStateCondition={this.updateStateCondition}
+              changeGame={this.props.changeGame}
+              char={this.props.char}
             />
           </div>
           <div className="actionButton">

@@ -1,16 +1,19 @@
 import React, { Component } from "react";
-
-// !!!!!!!!! This file is currently not working.  It's a copy paste of old code and needs to be updated !!!!!!!!!!!!!!!!
+import Fight from "../Fight.js";
 
 /* props: userList
           stateConditions:{selected, challenging, aggressors}
-          updateStateCondition*/
+          updateStateCondition
+          changeGame
+          char
+          */
 export default class CreateUserList extends Component {
   constructor(props) {
     super(props);
     this.selectUser = this.selectUser.bind(this);
     //this.selectChallenging = this.selectChallenging.bind(this);
     this.declineFight = this.declineFight.bind(this);
+    this.acceptFight = this.acceptFight.bind(this);
   }
 
   selectUser(e) {
@@ -25,9 +28,12 @@ export default class CreateUserList extends Component {
     let aggressors = [...this.props.stateConditions.aggressors].shift();
     this.props.updateStateCondition("aggressors", aggressors);
   }
-  acceptFight() {
+  acceptFight(opponent) {
     // FAKE tell aggressive user fight was accepted, begin fight
     //begin fight
+    this.props.changeGame(
+      <Fight char={this.props.char} otherUser={opponent} />
+    );
   }
   render() {
     const { selected, challenging, aggressors } = this.props.stateConditions;
@@ -67,7 +73,9 @@ export default class CreateUserList extends Component {
                 {user}
               </p>
               <div>
-                <button>✓</button>{" "}
+                <button onClick={this.acceptFight.bind(aggressors[0])}>
+                  ✓
+                </button>
                 <button onClick={this.declineFight}>X</button>
               </div>
             </div>
