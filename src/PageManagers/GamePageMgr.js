@@ -18,7 +18,20 @@ export default class GamePageMgr extends Component {
     };
   }
   changeGame(gamePage) {
-    this.setState({ gamePage });
+    if (gamePage === "Diner") {
+      console.log("Diner");
+      this.setState({
+        gamePage: (
+          <Diner
+            char={this.props.char}
+            changeGame={this.changeGame}
+            userList={this.props.userList}
+          />
+        )
+      });
+    } else {
+      this.setState({ gamePage });
+    }
   }
 
   render() {

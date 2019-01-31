@@ -14,17 +14,17 @@ function getAttackObj(stats) {
   let message = "";
 
   if (accRoll >= 1 - stats.acc) {
-    message += ` It hits for ${stats.dmg}`;
+    message += ` It hits for `;
     // If the roll exceeds the required accuracy, deal damage
     calcDMG = stats.dmg;
 
     //If dealing damage, calc for a critical
     const critRoll = getRand(0, 100);
-    if (critRoll >= 1 - stats.crit) {
-      message += ` with a critical strike!`;
-      calcDMG *= stats.critMulti;
+    if (critRoll >= 100 - stats.crit) {
+      calcDMG *= Math.floor(stats.critMulti);
+      message += `${calcDMG} with a critical strike!`;
     } else {
-      message += "."; // No crit, end sentence
+      message += `${calcDMG}.`; // No crit, end sentence
     }
   } else {
     message += ` but misses.`; // Failed acc roll

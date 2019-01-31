@@ -32,6 +32,11 @@ export default class CreateUserList extends Component {
     // No one is challenged but someone is selected
     if (selected && !challenging) {
       api.sendEventToUser(selected, this.props.char.name, "fight");
+      api.sendChat(
+        `*${
+          this.props.char.name
+        } has been wronged by ${selected} and demands satisfaction!*`
+      );
       this.props.updateStateCondition("challenging", selected);
       // Pressing the challenge button twice on a target cancels it.
     } else if (selected === challenging) {
@@ -83,13 +88,11 @@ export default class CreateUserList extends Component {
             return (
               <div className="aggressor" key={i}>
                 <p onClick={this.selectUser}>{user}</p>
-                <div className="actionButtons">
-                  <CreateULButtons
-                    target={user}
-                    acceptFight={this.acceptFight}
-                    declineFight={this.declineFight}
-                  />
-                </div>
+                <CreateULButtons
+                  target={user}
+                  acceptFight={this.acceptFight}
+                  declineFight={this.declineFight}
+                />
               </div>
             );
             break;
@@ -100,14 +103,12 @@ export default class CreateUserList extends Component {
                 <p key={i} onClick={this.selectUser}>
                   {user}
                 </p>
-                <div className="actionButtons">
-                  <CreateULButtons
-                    target={user}
-                    challengeUser={this.challengeUser}
-                    wave={this.props.wave}
-                    char={this.props.char}
-                  />
-                </div>
+                <CreateULButtons
+                  target={user}
+                  challengeUser={this.challengeUser}
+                  wave={this.props.wave}
+                  char={this.props.char}
+                />
               </div>
             );
             break;

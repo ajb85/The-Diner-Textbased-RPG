@@ -9,14 +9,12 @@ export default class Food extends Weapon {
   }
 
   throw() {
-    const stats = Object.create({}, this.attributes);
-    stats.attackName = "Throw Food";
-    return gFunc.getAttackObj(stats);
+    this.attributes.attackName = "Throw Food";
+    return gFunc.getAttackObj(this.attributes);
   }
 
   slap() {
-    const stats = Object.create({}, this.attributes);
-    stats.attackName = "Slap";
-    return gFunc.getAttackObj(stats);
+    this.attributes.attackName = "Slap";
+    return gFunc.getAttackObj(this.attributes);
   }
 }

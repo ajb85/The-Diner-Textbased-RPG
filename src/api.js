@@ -14,6 +14,9 @@ function sendLogin(name, cb) {
 function sendChat(message) {
   socket.emit("chat", message);
 }
+function sendCombat(toUser, message) {
+  socket.emit("combat", { toUser, message });
+}
 function getUserList(cb) {
   socket.emit("userList", cb);
 }
@@ -26,6 +29,12 @@ function receiveChat(updateChat) {
   console.log("Listening for chat");
   socket.on("chat", res => {
     updateChat(res);
+  });
+}
+function receiveCombat(updateCombat) {
+  console.log("Listening for combat");
+  socket.on("combat", res => {
+    updateCombat(res);
   });
 }
 function receiveLogin(onLoginReceive) {
@@ -47,12 +56,14 @@ function onEventReceived(cb) {
 export default {
   sendLogin,
   sendChat,
+  sendCombat,
   sendEventToUser,
   receiveLogin,
   getUserList,
   updateUserList,
   receiveChat,
-  onEventReceived
+  onEventReceived,
+  receiveCombat
 };
 
 // function sendLogin(name) {

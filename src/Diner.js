@@ -93,7 +93,11 @@ export default class Diner extends Component {
       eventData.fromUser === this.state.challenging
     ) {
       this.props.changeGame(
-        <Fight char={this.props.char} opponent={eventData.fromUser} />
+        <Fight
+          char={this.props.char}
+          opponent={eventData.fromUser}
+          changeGame={this.props.changeGame}
+        />
       );
     } else if (eventData.type === "fight") {
       aggressors.push(eventData.fromUser);
@@ -122,7 +126,7 @@ export default class Diner extends Component {
   render() {
     const { aggressors, selected, challenging } = this.state;
     const stateConditions = { aggressors, selected, challenging };
-    const pTaggedLog = [...this.state.chatlog].map(message => <p>message</p>);
+    const pTaggedLog = [...this.state.chatlog].map(message => <p>{message}</p>);
     return (
       <div className="container diner">
         <div className="chatContainer">

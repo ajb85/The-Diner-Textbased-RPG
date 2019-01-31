@@ -19,17 +19,21 @@ io.on("connection", socket => {
     }
   });
 
-  // Send invites to each other
-  socket.on("events", eventData => {
-    console.log("Sending event to: ", eventData.toUser);
-    socket.broadcast.to(activeUsers[eventData.toUser].id).emit("events", {
-      fromUser: eventData.fromUser,
-      type: eventData.type
-    });
-  });
   // User chats
-  socket.on("chat", (message, updateLocalChat) => {
+  socket.on("chat", message => {
     broadCastMessage("chat", message);
+  });
+
+  // User disconnects
+  socket.on("disconnect", name => {
+    console.log(name);
+    // Possible to feed a name?
+    for (let user in activeUsers) {
+      if (activeUsers[user] === socket) {
+        delete activeUsers[user];
+      }
+      broadCastMessage("activeUsers", Object.keys(activeUsers));
+    }
   });
 
   // User disconnects
@@ -48,69 +52,32 @@ io.on("connection", socket => {
     console.log("received error from client:", client.id);
     console.log(err);
   });
+  // Public broadcasts
 
+  // Broad cast to everyone in a room
   function broadCastMessage(room, message) {
     for (let user in activeUsers) {
       activeUsers[user].emit(room, message);
     }
   }
-}); // io.on connection
+  // Private broadcasts
 
-// Garbage below...but you know, what man's garbage...
-//
-// function updateUserList() {
-//   console.log("userList function");
-// }
-// function handleLogin(name, cb, socket) {
-//   if (!activeUsers[name]) return cb(0);
-//   activeUsers[name] = id;
-//   console.log(activeUsers);
-//   //broadCastMessage("userList", userList);
-//
-//   return cb(null, name);
-// }
-// function handleDisconnect(id) {
-//   removeUser(id);
-// }
-//
-// function addUser(id, name) {
-//   activeUsers[id] = name;
-// }
-// function removeUser(id) {
-//   delete activeUsers[id];
-// }
+  // Send invites to each other
+  socket.on("events", eventData => {
+    socket.broadcast.to(activeUsers[eventData.toUser].id).emit("events", {
+      fromUser: eventData.fromUser,
+      type: eventData.type
+    });
+  });
+  // Send combat data between users
+  socket.on("combat", combatData => {
+    //socket.emit("combat", combatData.message);
+    socket.broadcast
+      .to(activeUsers[combatData.toUser].id)
+      .emit("combat", combatData.message);
+  });
+}); // io.on connection
 
 const port = 28890;
 server.listen(port);
 server.on("listening", () => console.log("Listening on port", port));
-
-// socket.on("login", username => {
-//   console.log(socket.id, " logged in");
-//   if (activeUsers[username]) {
-//     // 0 = bad login
-//     socket.emit("login", 0);
-//   } else {
-//     activeUsers[username] = socket.id;
-//     socket.broadcast.emit("changeInUsers", activeUsers);
-//     socket.join("changeInUsers");
-//     // 1 = good login
-//     socket.emit("login", 1);
-//   }
-// }); //login socket
-//
-// // Sending chat messages
-// socket.on("chat", message => {
-//   socket.emit("chat", message);
-//   socket.broadcast.emit("chat", message);
-// }); // Chat socket
-//
-// // User disconnects
-// client.on("disconnect", () => {
-//   disconnectUser();
-// });
-//
-// // Console log errors
-// client.on("error", function(err) {
-//   console.log("received error from client:", client.id);
-//   console.log(err);
-// });

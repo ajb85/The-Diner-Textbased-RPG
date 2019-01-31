@@ -16,8 +16,7 @@ export default class Weapon {
   }
   // acc, dmg, crit, critMulti, attackName
   basicAttack() {
-    const stats = Object.create({}, this.attributes);
-    stats.attackName = "Punch";
-    return gFunc.getAttackObj(stats);
+    this.attributes.attackName = "Punch";
+    return gFunc.getAttackObj(this.attributes);
   }
 }

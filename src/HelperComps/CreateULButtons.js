@@ -19,7 +19,7 @@ export default class CreateCombatButton extends Component {
       </button>
     );
     return (
-      <div>
+      <div className="actionButtons">
         {acceptButton}
         {cancelButton}
       </div>
@@ -28,21 +28,22 @@ export default class CreateCombatButton extends Component {
   selectedUser() {
     const challengeButton = (
       <button onClick={this.props.challengeUser.bind(this, this.props.target)}>
-        F
+        Fight
       </button>
     );
     const waveButton = (
-      <button onClick={this.props.wave.bind(this, this.props.target)}>W</button>
+      <button onClick={this.props.wave.bind(this, this.props.target)}>
+        Wave
+      </button>
     );
     return (
-      <div>
+      <div className="actionButtons">
         {challengeButton}
         {waveButton}
       </div>
     );
   }
   render() {
-    console.log("Target Props: ", this.props.target);
     let actionButtons = [];
     if (this.props.acceptFight) {
       actionButtons = this.aggressiveUser();

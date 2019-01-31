@@ -9,14 +9,12 @@ export default class Sharp extends Weapon {
   }
 
   slash() {
-    const stats = Object.create({}, this.attributes);
-    stats.attackName = "Slash";
-    return gFunc.getAttackObj(stats);
+    this.attributes.attackName = "Slash";
+    return gFunc.getAttackObj(this.attributes);
   }
 
   stab() {
-    const stats = Object.create({}, this.attributes);
-    stats.attackName = "Stab";
-    return gFunc.getAttackObj(stats);
+    this.attributes.attackName = "Stab";
+    return gFunc.getAttackObj(this.attributes);
   }
 }

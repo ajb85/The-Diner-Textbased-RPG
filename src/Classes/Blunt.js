@@ -9,14 +9,12 @@ export default class Blunt extends Weapon {
   }
 
   smack() {
-    const stats = Object.create({}, this.attributes);
-    stats.attackName = "Smack";
-    return gFunc.getAttackObj(stats);
+    this.attributes.attackName = "Smack";
+    return gFunc.getAttackObj(this.attributes);
   }
 
   smash() {
-    const stats = Object.create({}, this.attributes);
-    stats.attackName = "Smash";
-    return gFunc.getAttackObj(stats);
+    this.attributes.attackName = "Smash";
+    return gFunc.getAttackObj(this.attributes);
   }
 }
