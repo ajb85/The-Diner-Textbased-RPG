@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CreateUserList from "./HelperComps/CreateUserList.js";
+import Fight from "./Fight.js";
 import api from "./api.js";
 
 // props: changeGame, char, userList
@@ -87,11 +88,17 @@ export default class Diner extends Component {
     let { aggressors } = this.state;
     // Save aggressor names in an array so they can be queued and index zero
     // highlighted in the user list
-    if (eventData.type === "fight") {
-      console.log("no this!");
+    if (
+      eventData.type === "fight" &&
+      eventData.fromUser === this.state.challenging
+    ) {
+      this.props.changeGame(
+        <Fight char={this.props.char} opponent={eventData.fromUser} />
+      );
+    } else if (eventData.type === "fight") {
       aggressors.push(eventData.fromUser);
+      this.setState({ aggressors: [...aggressors] });
     }
-    this.setState({ aggressors: [...aggressors] });
   }
   receiveRequestAnswer(res) {
     if (res) {
@@ -115,10 +122,11 @@ export default class Diner extends Component {
   render() {
     const { aggressors, selected, challenging } = this.state;
     const stateConditions = { aggressors, selected, challenging };
+    const pTaggedLog = [...this.state.chatlog].map(message => <p>message</p>);
     return (
       <div className="container diner">
         <div className="chatContainer">
-          <div className="chatlog">{this.state.chatlog.join("\n")}</div>
+          <div className="chatlog">{pTaggedLog}</div>
           <form onSubmit={this.submitChat}>
             <input
               type="text"

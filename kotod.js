@@ -8,6 +8,8 @@ io.on("connection", socket => {
   // User logins
   socket.on("login", (name, cb) => {
     //Trying id:name.  I realize the lookup would be easier with name:id
+    // ISSUE: users log in and can sit at character select.  They'll appear
+    // on the user list but be unreachable
     if (!activeUsers[name]) {
       activeUsers[name] = socket;
       broadCastMessage("activeUsers", Object.keys(activeUsers));

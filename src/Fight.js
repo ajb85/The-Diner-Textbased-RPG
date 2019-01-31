@@ -32,7 +32,7 @@ export default class Fight extends Component {
   }
 
   render() {
-    let currentWindow;
+    let currentWindow = [];
 
     if (this.state && !this.state.weapon) {
       currentWindow = [

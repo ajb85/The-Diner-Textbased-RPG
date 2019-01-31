@@ -5,12 +5,14 @@
 // chat houses the text log, input, and submit button
 div.chatContainer {
   height: 100vh;
+  min-height: 200px;
   padding: 0 0 5px 5px;
   width: 75%;
   border-right: 1px solid white;
 
   div.chatlog {
     height: 94vh;
+    min-height: 188px;
     .flexAlign(flex-end, flex-start);
     flex-direction: column;
     border-bottom: 1px solid white;
@@ -26,7 +28,7 @@ div.chatContainer {
     margin-top: 0.5vh;
     padding: 5px 5px 5px 0;
     .flexAlign(flex-start);
-    min-height: 24px;
+    //min-height: 24px;
 
     input {
       width: 75%;
@@ -49,10 +51,11 @@ div.buttonsAndList {
   .flexAlign;
   flex-direction: column;
 
-  //B&L has two pieces: userlist & action buttons
+  // B&L has two pieces: userlist & action buttons.  They used to be different
+  // divs but all in the same now
   div.users {
     width: 100%;
-    height: 80vh;
+    height: 100vh;
     border-bottom: 1px solid white;
     overflow-y: scroll;
     // General text styles for user list names
@@ -61,57 +64,56 @@ div.buttonsAndList {
       font-size: 2rem;
       margin: 5px 10px;
 
-      //Credit: https://css-tricks.com/almanac/properties/u/user-select/
+      // Credit: https://css-tricks.com/almanac/properties/u/user-select/
+      // Text won't highlight
       -webkit-user-select: none; /* Chrome all / Safari all */
       -moz-user-select: none; /* Firefox all */
       -ms-user-select: none; /* IE 10+ */
       user-select: none; /* Likely future */
     }
-
-    // Style once user clicks their name
-    p.selected {
-      background-color: @selected;
-      //color: @bg1;
-    }
-
-    //Style after user clicks Fight button
-    p.challenging {
-      background-color: @challenging;
+    // General button style for buttons in the user list
+    button {
+      background: transparent;
+      border: none;
       color: @font1;
-      //border: 1px solid transparent;
+      font-size: 1.8rem;
+      cursor: pointer;
     }
 
+    // General styles for highlighted users in User List
+    div.aggressor,
+    div.selected,
+    div.challenging {
+      color: @font1;
+      .flexAlign(space-between);
+      p {
+        width: 40%;
+      }
+    }
     // Style after another user clicks challenge button on this user's name
     // (div because it also has buttons and not just the p tag)
     div.aggressor {
       background-color: @aggressor;
-      color: @font1;
-      //border: 1px solid transparent;
-      .flexAlign(space-between);
-
-      p {
-        width: 40%;
-      }
-      // Buttons contained inside their own div
-      div {
-        width: 40%;
-        .flexAlign(space-around);
-
-        button {
-          background: transparent;
-          border: none;
-          color: @font1;
-          font-size: 1.8rem;
-          cursor: pointer;
-        }
-      }
+    }
+    // Style once user clicks their name
+    div.selected {
+      background-color: @selected;
+    }
+    //Style after user clicks Fight button
+    div.challenging {
+      background-color: @challenging;
+    }
+    // Styles for the action-content buttons next to names
+    div.actionButtons {
+      width: 40%;
+      .flexAlign(space-around);
     }
 
     // Not working atm, I want a white border if an aggressor or challeneged user is selected
-    p.challenging.selected,
-    p.aggressor.selected {
-      border: 1px solid white;
-    }
+    // p.challenging.selected,
+    // p.aggressor.selected {
+    //   border: 1px solid white;
+    // }
   }
 
   div.actionButton {

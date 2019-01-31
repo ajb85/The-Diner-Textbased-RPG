@@ -9,12 +9,12 @@ export default class CreateCombatButton extends Component {
 
   aggressiveUser() {
     const acceptButton = (
-      <button onClick={this.props.acceptFight.bind(this.props.target)}>
+      <button onClick={this.props.acceptFight.bind(this, this.props.target)}>
         ✓
       </button>
     );
     const cancelButton = (
-      <button onClick={this.props.declineFight.bind(this.props.target)}>
+      <button onClick={this.props.declineFight.bind(this, this.props.target)}>
         X
       </button>
     );

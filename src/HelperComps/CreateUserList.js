@@ -54,8 +54,12 @@ export default class CreateUserList extends Component {
     this.props.updateStateCondition("aggressors", aggressors);
   }
   acceptFight(opponent) {
-    // FAKE tell aggressive user fight was accepted, begin fight
     //begin fight
+    api.sendEventToUser(
+      this.props.stateConditions.aggressors[0],
+      this.props.char.name,
+      "fight"
+    );
     this.props.changeGame(<Fight char={this.props.char} opponent={opponent} />);
   }
   render() {
@@ -68,9 +72,11 @@ export default class CreateUserList extends Component {
         switch (user) {
           case challenging:
             return (
-              <p key={i} onClick={this.selectUser} className="challenging">
-                {user}
-              </p>
+              <div className="challenging">
+                <p key={i} onClick={this.selectUser}>
+                  {user}
+                </p>
+              </div>
             );
             break;
           case aggressors[0]:
@@ -94,7 +100,7 @@ export default class CreateUserList extends Component {
                 <p key={i} onClick={this.selectUser}>
                   {user}
                 </p>
-                <div>
+                <div className="actionButtons">
                   <CreateULButtons
                     target={user}
                     challengeUser={this.challengeUser}
