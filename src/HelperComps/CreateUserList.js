@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import Fight from "../Fight.js";
+import CreateULButtons from "./CreateULButtons.js";
 
 /* props: userList
           stateConditions:{selected, challenging, aggressors}
           updateStateCondition
           changeGame
           char
+          wave
           */
 export default class CreateUserList extends Component {
   constructor(props) {
@@ -14,6 +16,28 @@ export default class CreateUserList extends Component {
     //this.selectChallenging = this.selectChallenging.bind(this);
     this.declineFight = this.declineFight.bind(this);
     this.acceptFight = this.acceptFight.bind(this);
+    this.challengeUser = this.challengeUser.bind(this);
+    console.log("char: ", this.props.char, this.props.char.name);
+  }
+  challengeUser(e) {
+    //fake request to send request to server goes here
+    const { selected, challenging } = this.props.stateConditions;
+    // Currently you can challenge someone while someone has already
+    // challenged you.  That can be changed here by checking for:
+    // !stateConditions.aggressors
+
+    // !!! Need condition to check if aggressive user is being challeneged,
+    // !!! in which case just start the fight
+
+    // No one is challenged but someone is selected
+    if (selected && !challenging) {
+      this.props.updateStateCondition("challenging", selected);
+      // Pressing the challenge button twice on a target cancels it.
+    } else if (selected === challenging) {
+      this.props.updateStateCondition("challenging", "");
+      //Deselect the target automatically after canceling challenge
+      this.props.updateStateCondition("selected", "");
+    }
   }
 
   selectUser(e) {
@@ -31,9 +55,7 @@ export default class CreateUserList extends Component {
   acceptFight(opponent) {
     // FAKE tell aggressive user fight was accepted, begin fight
     //begin fight
-    this.props.changeGame(
-      <Fight char={this.props.char} otherUser={opponent} />
-    );
+    this.props.changeGame(<Fight char={this.props.char} opponent={opponent} />);
   }
   render() {
     let userList = [<p>Loading...</p>];
@@ -52,15 +74,14 @@ export default class CreateUserList extends Component {
             break;
           case aggressors[0]:
             return (
-              <div className="aggressor">
-                <p key={i} onClick={this.selectUser}>
-                  {user}
-                </p>
-                <div>
-                  <button onClick={this.acceptFight.bind(aggressors[0])}>
-                    ✓
-                  </button>
-                  <button onClick={this.declineFight}>X</button>
+              <div className="aggressor" key={i}>
+                <p onClick={this.selectUser}>{user}</p>
+                <div className="actionButtons">
+                  <CreateULButtons
+                    target={user}
+                    acceptFight={this.acceptFight}
+                    declineFight={this.declineFight}
+                  />
                 </div>
               </div>
             );
@@ -68,9 +89,19 @@ export default class CreateUserList extends Component {
 
           case selected:
             return (
-              <p key={i} onClick={this.selectUser} className="selected">
-                {user}
-              </p>
+              <div className="selected">
+                <p key={i} onClick={this.selectUser}>
+                  {user}
+                </p>
+                <div>
+                  <CreateULButtons
+                    target={user}
+                    challengeUser={this.challengeUser}
+                    wave={this.props.wave}
+                    char={this.props.char}
+                  />
+                </div>
+              </div>
             );
             break;
           default:
@@ -85,6 +116,11 @@ export default class CreateUserList extends Component {
     return userList;
   }
 }
+
+// <button onClick={this.acceptFight.bind(aggressors[0])}>
+//   ✓
+// </button>
+// <button onClick={this.declineFight}>X</button>
 
 // case user === challenging && user === selected:
 //   return (

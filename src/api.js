@@ -12,7 +12,6 @@ function sendLogin(name, cb) {
   socket.emit("login", name, cb);
 }
 function sendChat(message) {
-  console.log("Sending chat");
   socket.emit("chat", message);
 }
 function getUserList(cb) {
@@ -23,7 +22,6 @@ function getUserList(cb) {
 function receiveChat(updateChat) {
   console.log("Listening for chat");
   socket.on("chat", res => {
-    console.log("Found chat");
     updateChat(res);
   });
 }
@@ -33,7 +31,6 @@ function receiveLogin(onLoginReceive) {
 function updateUserList(cb) {
   console.log("Listening for User List");
   socket.on("activeUsers", res => {
-    console.log("User List received", res);
     cb(res);
   });
 }

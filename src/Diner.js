@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import CreateCombatButton from "./HelperComps/CreateCombatButton.js";
 import CreateUserList from "./HelperComps/CreateUserList.js";
 import api from "./api.js";
 
@@ -16,6 +15,7 @@ export default class Diner extends Component {
     this.onReceiveUserList = this.onReceiveUserList.bind(this); // Local
     this.receiveRequestAnswer = this.receiveRequestAnswer.bind(this);
     this.updateStateCondition = this.updateStateCondition.bind(this);
+    this.waveAtUser = this.waveAtUser.bind(this);
 
     this.state = {
       typing: "",
@@ -96,6 +96,16 @@ export default class Diner extends Component {
       //moved to helper --> this.cancelChallenge();
     }
   }
+  waveAtUser(name, test) {
+    // Psh, sum people...trying to wave at themselves
+    if (name === this.props.char.name) {
+      api.sendChat(
+        `*${name} clinches their own anus and runs head first into the wall*`
+      );
+    } else {
+      api.sendChat(`*${this.props.char.name} waves at ${name}*`);
+    }
+  }
 
   render() {
     const { aggressors, selected, challenging } = this.state;
@@ -121,16 +131,12 @@ export default class Diner extends Component {
               updateStateCondition={this.updateStateCondition}
               changeGame={this.props.changeGame}
               char={this.props.char}
+              wave={this.waveAtUser}
             />
           </div>
-          <div className="actionButton" />
         </div>
       </div>
     );
   }
 }
-
-// <CreateCombatButton
-//   stateConditions={stateConditions}
-//   updateStateCondition={this.updateStateCondition}
-// />
+//<div className="actionButton" />
