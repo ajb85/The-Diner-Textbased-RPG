@@ -1,20 +1,14 @@
 {
   "str": [
-    {
-      "Plate": { "dmg": 10, "acc": 50, "crit": 10 },
-      "Spoon": { "dmg": 7, "acc": 40, "crit": 5 }
-    }
+    { "name": "Plate", "dmg": 10, "acc": 50, "crit": 10 },
+    { "name": "Spoon", "dmg": 7, "acc": 40, "crit": 5 }
   ],
   "dex": [
-    {
-      "Fork": { "dmg": 5, "acc": 80, "crit": 50 },
-      "Knife": { "dmg": 8, "acc": 80, "crit": 70 }
-    }
+    { "name": "Fork", "dmg": 5, "acc": 80, "crit": 50 },
+    { "name": "Knife", "dmg": 8, "acc": 80, "crit": 70 }
   ],
   "intel": [
-    {
-      "Meatballs": { "dmg": 3, "acc": 100, "crit": 75 },
-      "Hard Candy": { "dmg": 5, "acc": 100, "crit": 85 }
-    }
+    { "name": "Meatballs", "dmg": 3, "acc": 100, "crit": 75 },
+    { "name": "Hard Candy", "dmg": 5, "acc": 100, "crit": 85 }
   ]
 }

@@ -5,11 +5,37 @@
   div.user {
     height: 50vh;
     width: 100%;
+    min-height: 180px;
+
+    div.currentWindow {
+      height: 40vh;
+      padding-top: 10px;
+    }
+    div.hud {
+      height: 9vh;
+      max-height: 50px;
+      width: 100%;
+      .flexAlign(space-between);
+
+      div.hudVitals {
+        .flexAlign(space-between);
+        width: 18%;
+        margin-left: 30px;
+        font-size: 2rem;
+      }
+      div.hudStats {
+        .flexAlign(space-between);
+        width: 10%;
+        margin-right: 30px;
+        font-size: 2rem;
+      }
+    }
   }
   div.opponent {
     border-bottom: 1px solid white;
   }
   div.user {
-    .flexAlign;
+    .flexAlign(space-between);
+    flex-direction: column;
   }
 }

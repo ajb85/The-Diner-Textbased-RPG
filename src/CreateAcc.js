@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CharSelect from "./CharSelect.js";
 import textData from "./data/createAcc.json";
 import gFunc from "./GlobalFunctions";
+import api from "./api.js";
 export default class CreateAcc extends Component {
   constructor(props) {
     // Props = {loadPage}
@@ -11,11 +12,14 @@ export default class CreateAcc extends Component {
     this.fakeServer = this.fakeServer.bind(this);
     this.loginResponse = this.loginResponse.bind(this);
     this.state = { showBtn: false, name: "", badLogin: 0 };
+
+    //api.receiveLogin(this.loginResponse);
   }
   // Submits the name to the server.
   submitName(e) {
     e.preventDefault();
-    this.fakeServer(this.state.name);
+    //this.fakeServer(this.state.name); // local code
+    api.sendLogin(this.state.name, this.loginResponse);
   }
   // Shortterm code to mimic the server receiving/checking/sending data
   fakeServer(name) {
@@ -28,9 +32,14 @@ export default class CreateAcc extends Component {
   }
   //Receive response from server, move to next page or deny login
   loginResponse(res) {
+    console.log("loginResponse: ", res);
     if (res) {
       this.props.loadPage(
-        <CharSelect loadPage={this.props.loadPage} name={res.name} />
+        <CharSelect
+          loadPage={this.props.loadPage}
+          name={this.state.name}
+          userList={res}
+        />
       );
     } else {
       this.setState({ badLogin: 1 });

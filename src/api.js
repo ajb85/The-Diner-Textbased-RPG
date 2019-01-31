@@ -2,15 +2,67 @@
 const io = require("socket.io-client");
 //const url = "ajbrush.com";
 const socket = io.connect(window.location.hostname, { path: "/node" });
+socket.on("error", function(err) {
+  console.log("received socket error:");
+  console.log(err);
+});
 
-function sendLogin(name) {
-  socket.emit("login", name);
+// Functions that talk to the server
+function sendLogin(name, cb) {
+  socket.emit("login", name, cb);
 }
-function receiveGameData(callback) {
-  console.log("Listening for login from server");
-  socket.on("login", res => {
-    callback(res);
+function sendChat(message) {
+  console.log("Sending chat");
+  socket.emit("chat", message);
+}
+function getUserList(cb) {
+  socket.emit("userList", cb);
+}
+
+// Functions that listen to the server
+function receiveChat(updateChat) {
+  console.log("Listening for chat");
+  socket.on("chat", res => {
+    console.log("Found chat");
+    updateChat(res);
+  });
+}
+function receiveLogin(onLoginReceive) {
+  socket.on("login", onLoginReceive);
+}
+function updateUserList(cb) {
+  console.log("Listening for User List");
+  socket.on("activeUsers", res => {
+    console.log("User List received", res);
+    cb(res);
   });
 }
 
-export { sendLogin, receiveGameData };
+export default {
+  sendLogin,
+  sendChat,
+  receiveLogin,
+  getUserList,
+  updateUserList,
+  receiveChat
+};
+
+// function sendLogin(name) {
+//   socket.emit("login", name);
+// }
+// function sendChat(message) {
+//   socket.emit("chat", message);
+// }
+//
+// function receiveLogin(callback) {
+//   console.log("Listening for login response");
+//   socket.on("login", res => {
+//     callback(res);
+//   });
+// }
+// function joinChat(callback) {
+//   console.log("Listening for chat");
+//   socket.on("chat", res => {
+//     callback(res);
+//   });
+// }

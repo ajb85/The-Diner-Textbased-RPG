@@ -3,7 +3,7 @@ import textData from "./data/charSelect.json";
 import gFunc from "./GlobalFunctions.js";
 import Hero from "./Classes/Heroes.js";
 import GamePageMgr from "./PageManagers/GamePageMgr.js";
-// Props = {name, loadPage}
+// Props = {name, loadPage, userList}
 export default class CharSelect extends Component {
   constructor(props) {
     super(props);
@@ -56,7 +56,11 @@ export default class CharSelect extends Component {
     const charKey = e.target.dataset.char;
     const selection = this.state.chars[charKey];
     this.props.loadPage(
-      <GamePageMgr loadPage={this.props.loadPage} char={selection} />
+      <GamePageMgr
+        loadPage={this.props.loadPage}
+        char={selection}
+        userList={this.props.userList}
+      />
     );
   }
   render() {
