@@ -16,6 +16,7 @@ export default class Diner extends Component {
     this.receiveRequestAnswer = this.receiveRequestAnswer.bind(this);
     this.updateStateCondition = this.updateStateCondition.bind(this);
     this.waveAtUser = this.waveAtUser.bind(this);
+    this.receiveRequest = this.receiveRequest.bind(this);
 
     this.state = {
       typing: "",
@@ -29,6 +30,7 @@ export default class Diner extends Component {
     api.updateUserList(this.onReceiveUserList);
     api.getUserList(this.onReceiveUserList);
     api.receiveChat(this.onChatReceive);
+    api.onEventReceived(this.receiveRequest);
   }
   componentDidMount() {
     // // Local - Fake userlist generation
@@ -81,11 +83,14 @@ export default class Diner extends Component {
   // receiveUserList(userList) { // Local
   //   this.setState({ userList }); // Local
   // }  // Local
-  receiveRequest(res) {
+  receiveRequest(eventData) {
+    let { aggressors } = this.state;
     // Save aggressor names in an array so they can be queued and index zero
     // highlighted in the user list
-    let { aggressors } = this.state;
-    aggressors.push(res);
+    if (eventData.type === "fight") {
+      console.log("no this!");
+      aggressors.push(eventData.fromUser);
+    }
     this.setState({ aggressors: [...aggressors] });
   }
   receiveRequestAnswer(res) {
@@ -100,7 +105,7 @@ export default class Diner extends Component {
     // Psh, sum people...trying to wave at themselves
     if (name === this.props.char.name) {
       api.sendChat(
-        `*${name} clinches their own anus and runs head first into the wall*`
+        `*${name} clinches their own anus and runs screeching head first into the wall*`
       );
     } else {
       api.sendChat(`*${this.props.char.name} waves at ${name}*`);

@@ -17,6 +17,14 @@ io.on("connection", socket => {
     }
   });
 
+  // Send invites to each other
+  socket.on("events", eventData => {
+    console.log("Sending event to: ", eventData.toUser);
+    socket.broadcast.to(activeUsers[eventData.toUser].id).emit("events", {
+      fromUser: eventData.fromUser,
+      type: eventData.type
+    });
+  });
   // User chats
   socket.on("chat", (message, updateLocalChat) => {
     broadCastMessage("chat", message);

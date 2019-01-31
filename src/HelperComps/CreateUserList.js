@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Fight from "../Fight.js";
 import CreateULButtons from "./CreateULButtons.js";
+import api from "../api.js";
 
 /* props: userList
           stateConditions:{selected, challenging, aggressors}
@@ -9,15 +10,14 @@ import CreateULButtons from "./CreateULButtons.js";
           char
           wave
           */
+
 export default class CreateUserList extends Component {
   constructor(props) {
     super(props);
     this.selectUser = this.selectUser.bind(this);
-    //this.selectChallenging = this.selectChallenging.bind(this);
     this.declineFight = this.declineFight.bind(this);
     this.acceptFight = this.acceptFight.bind(this);
     this.challengeUser = this.challengeUser.bind(this);
-    console.log("char: ", this.props.char, this.props.char.name);
   }
   challengeUser(e) {
     //fake request to send request to server goes here
@@ -31,6 +31,7 @@ export default class CreateUserList extends Component {
 
     // No one is challenged but someone is selected
     if (selected && !challenging) {
+      api.sendEventToUser(selected, this.props.char.name, "fight");
       this.props.updateStateCondition("challenging", selected);
       // Pressing the challenge button twice on a target cancels it.
     } else if (selected === challenging) {

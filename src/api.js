@@ -17,6 +17,9 @@ function sendChat(message) {
 function getUserList(cb) {
   socket.emit("userList", cb);
 }
+function sendEventToUser(toUser, fromUser, type) {
+  socket.emit("events", { toUser, fromUser, type });
+}
 
 // Functions that listen to the server
 function receiveChat(updateChat) {
@@ -34,14 +37,22 @@ function updateUserList(cb) {
     cb(res);
   });
 }
+function onEventReceived(cb) {
+  console.log("Listening for Events");
+  socket.on("events", res => {
+    cb(res);
+  });
+}
 
 export default {
   sendLogin,
   sendChat,
+  sendEventToUser,
   receiveLogin,
   getUserList,
   updateUserList,
-  receiveChat
+  receiveChat,
+  onEventReceived
 };
 
 // function sendLogin(name) {
