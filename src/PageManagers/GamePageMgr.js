@@ -19,7 +19,6 @@ export default class GamePageMgr extends Component {
   }
   changeGame(gamePage) {
     if (gamePage === "Diner") {
-      console.log("Diner");
       this.setState({
         gamePage: (
           <Diner

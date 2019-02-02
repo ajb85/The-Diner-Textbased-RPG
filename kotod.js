@@ -20,8 +20,8 @@ io.on("connection", socket => {
   });
 
   // User chats
-  socket.on("chat", message => {
-    broadCastMessage("chat", message);
+  socket.on("chat", messageOBJ => {
+    broadCastMessage("chat", messageOBJ);
   });
 
   // User disconnects

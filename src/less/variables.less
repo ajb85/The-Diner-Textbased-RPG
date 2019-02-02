@@ -5,8 +5,16 @@
 @font1: #fff; // white
 @accent1: #d65c70; // red
 @accent2: #2b6582; // blue
+@accent2OnLight: lighten(@accent2, 20%); // Blue for lighter bg
 @accent3: #8f96a4; // grey
 @accent4: #66816d; // green
+@accent4OnLight: lighten(@accent4, 20%); // green for lighter bg
 @challenging: @accent1;
 @aggressor: @accent2;
 @selected: @accent3;
+
+// At a certain point the screen will force the text to wrap.
+// to keep the style, I'm breaking it here.  '@media @lgBreak' means
+// I'm adjusting the layout if the screen falls below this size
+@lgBreak: ~"(max-width: 865px)";
+@smBreak: ~"(max-width: 451px)";

@@ -9,40 +9,54 @@ export default class CharSelect extends Component {
     super(props);
     this.rollChar = this.rollChar.bind(this);
     this.handleCharSelect = this.handleCharSelect.bind(this);
-    this.createCharBlock = this.createCharBlock.bind(this);
+    this.createCharCard = this.createCharCard.bind(this);
     this.state = {
       chars: {
         one: this.rollChar(),
         two: this.rollChar(),
-        three: this.rollChar()
+        three: this.rollChar(),
+        four: this.rollChar()
       }
     };
   }
-  createCharBlock(char, key) {
+  createCharCard(char, key) {
+    let buttonColor;
+    if (char.str >= char.dex && char.str >= char.intel) {
+      buttonColor = "strBG";
+    } else if (char.dex >= char.str && char.dex >= char.intel) {
+      buttonColor = "dexBG";
+    } else if (char.intel >= char.str && char.intel >= char.dex) {
+      buttonColor = "intelBG";
+    } else {
+      buttonColor = "luckBG";
+    }
     return (
-      <div className="charBlock" key={key}>
+      <div
+        className="charCard"
+        key={key}
+        data-char={key}
+        onClick={this.handleCharSelect}
+      >
         <div>
-          <h2>{char.name}</h2>
+          <h2 className="nameTitle">{char.name}</h2>
+          <h2 className="thisIsMeTitle">This is Me</h2>
         </div>
         <div className="statContainer">
           <div className="stat">
-            <p>Appetite:</p> <p>{char.str}</p>
+            <p>Appetite:</p> <p className="str">{char.str}</p>
           </div>
           <div className="stat">
-            <p>Etiquette:</p> <p>{char.dex}</p>
+            <p>Etiquette:</p> <p className="dexLight">{char.dex}</p>
           </div>
           <div className="stat">
-            <p>Foodie:</p> <p>{char.intel}</p>
+            <p>Foodie:</p> <p className="intel">{char.intel}</p>
           </div>
           <div className="stat">
-            <p>Luck:</p> <p>{char.luck}</p>
+            <p>Luck:</p> <p className="luck">{char.luck}</p>
           </div>
         </div>
-        <div>
-          <button data-char={key} onClick={this.handleCharSelect}>
-            This Is Me
-          </button>
-        </div>
+
+        <button className={buttonColor}>This Is Me</button>
       </div>
     );
   }
@@ -53,7 +67,18 @@ export default class CharSelect extends Component {
     return new Hero(newChar);
   }
   handleCharSelect(e) {
-    const charKey = e.target.dataset.char;
+    let charCard;
+    let search = e.target;
+    // User can click on any element in the char Card so I have to find
+    // the parent with all the data
+    while (!charCard) {
+      console.log(search);
+      if (search.dataset.char) {
+        charCard = search;
+      }
+      search = search.parentElement;
+    }
+    const charKey = charCard.dataset.char;
     const selection = this.state.chars[charKey];
     this.props.loadPage(
       <GamePageMgr
@@ -69,17 +94,18 @@ export default class CharSelect extends Component {
     let chars = [];
     // Create a DIV block for each character's stats
     for (let char in this.state.chars) {
-      chars.push(this.createCharBlock(this.state.chars[char], char));
+      chars.push(this.createCharCard(this.state.chars[char], char));
     }
     return (
       <div className="container selectChar">
-        <section>
-          <div className="textSide">{chars}</div>
-          <div className="inputSide">
-            {header}
-            {paragraph}
-          </div>
-        </section>
+        <div className="textSide">
+          {header}
+          {paragraph}
+        </div>
+        <div className="inputSide">
+          <div>{chars.slice(0, 2)}</div>
+          <div>{chars.slice(2)}</div>
+        </div>
       </div>
     );
   }

@@ -11,8 +11,8 @@ socket.on("error", function(err) {
 function sendLogin(name, cb) {
   socket.emit("login", name, cb);
 }
-function sendChat(message) {
-  socket.emit("chat", message);
+function sendChat(messageOBJ) {
+  socket.emit("chat", messageOBJ);
 }
 function sendCombat(toUser, message) {
   socket.emit("combat", { toUser, message });

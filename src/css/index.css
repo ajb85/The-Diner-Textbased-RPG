@@ -163,11 +163,32 @@ p {
 .str {
   color: #d65c70;
 }
+.strBG {
+  background-color: #d65c70;
+}
 .dex {
   color: #66816d;
 }
+.dexBG {
+  background-color: #66816d;
+}
+.dexLight {
+  color: #9cb1a2;
+}
 .intel {
   color: #2b6582;
+}
+.intelBG {
+  background-color: #2b6582;
+}
+.intelLight {
+  color: #4e9dc5;
+}
+.luck {
+  color: #8f96a4;
+}
+.luckBG {
+  background-color: #8f96a4;
 }
 .createAcc section,
 .selectChar section {
@@ -177,7 +198,7 @@ p {
   align-items: center;
   width: 100%;
 }
-@media (max-width: 760px) {
+@media (max-width: 865px) {
   .createAcc section,
   .selectChar section {
     flex-direction: column;
@@ -196,8 +217,9 @@ p {
   border-right: 1px solid white;
   height: 100vh;
   width: 50%;
+  min-height: 140px;
 }
-@media (max-width: 760px) {
+@media (max-width: 865px) {
   .createAcc div.textSide,
   .selectChar div.textSide {
     border-right: transparent;
@@ -209,8 +231,9 @@ p {
 .createAcc div.inputSide,
 .selectChar div.inputSide {
   width: 50%;
+  min-height: 140px;
 }
-@media (max-width: 760px) {
+@media (max-width: 865px) {
   .createAcc div.inputSide,
   .selectChar div.inputSide {
     width: 100%;
@@ -223,11 +246,18 @@ p {
   font-size: 3.6rem;
   padding-bottom: 15px;
   text-align: center;
+  margin-top: 10px;
 }
-@media (max-width: 760px) {
+@media (max-width: 865px) {
   .createAcc h1,
   .selectChar h1 {
     font-size: 4rem;
+  }
+}
+@media (max-width: 451px) {
+  .createAcc h1,
+  .selectChar h1 {
+    font-size: 3rem;
   }
 }
 .createAcc p,
@@ -236,11 +266,18 @@ p {
   font-size: 1.7rem;
   text-align: center;
 }
+@media (max-width: 451px) {
+  .createAcc p,
+  .selectChar p {
+    font-size: 1.5rem;
+  }
+}
 .createAcc input,
 .selectChar input {
   margin: 10px;
   width: 300px;
   height: 60px;
+  min-height: 30px;
   font-size: 1.8rem;
   text-align: center;
 }
@@ -257,6 +294,7 @@ p {
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.5s, color 0.5s;
+  min-height: 30px;
 }
 .createAcc button.realBtn:hover,
 .selectChar button.realBtn:hover {
@@ -271,62 +309,149 @@ p {
   border: transparent;
   outline: transparent;
 }
+.selectChar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+@media (max-width: 865px) {
+  .selectChar {
+    flex-direction: column-reverse;
+  }
+}
+@media (max-width: 865px) and (max-height: 825px) {
+  .selectChar {
+    justify-content: space-evenly;
+  }
+}
 .selectChar div {
   padding: 0;
-}
-.selectChar div.textSide {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.selectChar div.inputSide {
+  display: flex;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: row;
+  min-height: 400px;
+}
+.selectChar div.textSide {
+  border-style: solid;
+  border-width: 0 0 0 1px;
+  border-color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 865px) {
+  .selectChar div.textSide {
+    border-width: 1px 0 0 0;
+  }
+}
+@media (max-width: 865px) and (max-height: 825px) {
+  .selectChar div.textSide {
+    min-height: 110px;
+    height: 20vh;
+  }
+}
+@media (max-width: 555px) {
+  .selectChar div.textSide h1 {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 430px) {
+  .selectChar div.textSide h1 {
+    font-size: 2.7rem;
+  }
+}
+@media (max-width: 555px) {
+  .selectChar div.textSide p {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 555px) {
+  .selectChar div.textSide p {
+    font-size: 1.3rem;
+  }
 }
 .selectChar div.statContainer {
   width: 80%;
 }
-.selectChar div.charBlock {
-  max-width: 175px;
-  width: 100%;
-  margin: 0 5px;
-  height: 30vh;
+.selectChar div.charCard {
+  width: 160px;
+  min-height: 160px;
+  max-height: 190px;
+  margin: 10px 5px;
+  height: 35vh;
   background: #fff;
   color: #000;
+  border-radius: 7px;
+  padding: 5px 5px 0 5px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: box-shadow 2s, border 2s;
 }
-.selectChar div.charBlock h2 {
-  font-size: 1.8rem;
+@media (max-height: 600px) {
+  .selectChar div.charCard {
+    margin: 5px;
+  }
+}
+.selectChar div.charCard:hover {
+  box-shadow: 0px 0px 15px 13px rgba(250, 250, 250, 0.3);
+  border: 1px solid black;
+}
+.selectChar div.charCard h2.thisIsMeTitle {
+  display: none;
+}
+.selectChar div.charCard h2 {
+  font-family: "Oswald", sans-serif;
+  padding-top: 5px;
+  font-size: 2.1rem;
   text-decoration: underline;
 }
-.selectChar div.charBlock p {
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Oswald Regular'), local('Oswald-Regular'), url(https://fonts.gstatic.com/s/oswald/v16/TK3iWkUHHAIjg752GT8D.ttf) format('truetype');
+}
+.selectChar div.charCard p {
   padding: 0;
 }
-.selectChar div.charBlock div.stat {
+.selectChar div.charCard div.stat {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  width: 100%;
-  padding: 5px;
   width: 90%;
 }
-.selectChar div.charBlock button {
-  background-color: #000;
+.selectChar div.charCard button {
+  display: block;
   color: #fff;
-  border: 1px solid white;
-  border-radius: 5px;
-  max-width: 110px;
-  width: 100%;
+  border: 1px solid transparent;
+  width: 160px;
   height: 30px;
   font-size: 1.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.5s, color 0.5s;
+  border-radius: 0 0 7px 7px;
+  transition: background-color 0.5s, color 0.5s, width 0.5s;
+  min-height: 28px;
+  margin-bottom: -1px;
+  padding: 4px 0;
 }
-.selectChar div.charBlock button:hover {
+.selectChar div.charCard button:hover {
   background-color: #fff;
   color: #000;
+  width: 158px;
 }
 .diner {
   display: flex;
@@ -353,6 +478,9 @@ div.chatContainer div.chatlog {
   word-break: break-word;
   width: 100%;
   padding-bottom: 10px;
+}
+div.chatContainer div.chatlog p.emote {
+  color: #66816d;
 }
 div.chatContainer form {
   margin-top: 0.5vh;

@@ -11,13 +11,13 @@ export default class Diner extends Component {
     //binding 'this' to all my functions so I don't have to when they're invoked
     this.handleTyping = this.handleTyping.bind(this);
     this.submitChat = this.submitChat.bind(this);
-    // this.fakeServer = this.fakeServer.bind(this); // Local
     this.onChatReceive = this.onChatReceive.bind(this);
     this.onReceiveUserList = this.onReceiveUserList.bind(this); // Local
     this.receiveRequestAnswer = this.receiveRequestAnswer.bind(this);
     this.updateStateCondition = this.updateStateCondition.bind(this);
     this.waveAtUser = this.waveAtUser.bind(this);
     this.receiveRequest = this.receiveRequest.bind(this);
+    this.processMessages = this.processMessages.bind(this);
 
     this.state = {
       typing: "",
@@ -27,26 +27,11 @@ export default class Diner extends Component {
       challenging: "",
       aggressors: []
     };
-    // this.receiveUserList(this.props.userList); // Local
     api.updateUserList(this.onReceiveUserList);
     api.getUserList(this.onReceiveUserList);
     api.receiveChat(this.onChatReceive);
     api.onEventReceived(this.receiveRequest);
   }
-  componentDidMount() {
-    // // Local - Fake userlist generation
-    // this.receiveUserList(
-    //   [
-    //     "Average Joe",
-    //     "Tonya",
-    //     "Lego",
-    //     this.props.char.name,
-    //     "Shawn"
-    //   ].sort()
-    // );
-    //
-    // this.receiveRequest("Tonya");
-  } // Local
   updateStateCondition(condition, value) {
     this.setState({ [condition]: value });
   }
@@ -59,16 +44,15 @@ export default class Diner extends Component {
   submitChat(e) {
     e.preventDefault();
     const message = this.state.typing;
-    if (message.length) {
-      api.sendChat(`${this.props.char.name} says: ${message}`); // Live
-      // this.fakeServer(this.props.char.name, message); // Local
-      this.setState({ typing: "" });
-    }
+    // OBJ = {name: charName, message:WhatTheyTyped, type: ("emote" || "message")}
+    const name = this.props.char.name;
+    let messageOBJ = formatMessageOBJ(name, message);
+    if (messageOBJ) api.sendChat(messageOBJ);
+    // Reset field
+    this.setState({ typing: "" });
+
     return false;
   }
-  // fakeServer(name, message) { // Local
-  //   this.onChatReceive(`${name} says: ${message}`);
-  // }
   onChatReceive(message) {
     let { chatlog } = this.state;
     chatlog.push(message);
@@ -122,15 +106,32 @@ export default class Diner extends Component {
       api.sendChat(`*${this.props.char.name} waves at ${name}*`);
     }
   }
+  processMessages() {
+    return [...this.state.chatlog].map(message => {
+      if (message.type === "emote") {
+        return (
+          <p className="emote">
+            {message.name} {message.message}
+          </p>
+        );
+      } else if (message.type === "message") {
+        return (
+          <p className="message">
+            {message.name} says: {message.message}
+          </p>
+        );
+      }
+    });
+  }
 
   render() {
     const { aggressors, selected, challenging } = this.state;
     const stateConditions = { aggressors, selected, challenging };
-    const pTaggedLog = [...this.state.chatlog].map(message => <p>{message}</p>);
+    const processedMessages = this.processMessages();
     return (
       <div className="container diner">
         <div className="chatContainer">
-          <div className="chatlog">{pTaggedLog}</div>
+          <div className="chatlog">{processedMessages}</div>
           <form onSubmit={this.submitChat}>
             <input
               type="text"
@@ -156,4 +157,37 @@ export default class Diner extends Component {
     );
   }
 }
-//<div className="actionButton" />
+
+function formatMessageOBJ(name, message) {
+  const filtered = filterBadMessage(message);
+  if (!filtered) return null;
+
+  let messageOBJ = { name: name };
+  const split = filtered.split(" ");
+
+  // If user starts message with /me send a message emote without /me included
+
+  if (split[0].toLowerCase() === "/me") {
+    messageOBJ.message = split.slice(1).join(" ");
+    messageOBJ.type = "emote";
+    // Otherwise send as a normal message
+  } else {
+    messageOBJ.message = message;
+    messageOBJ.type = "message";
+  }
+
+  return messageOBJ;
+}
+
+function filterBadMessage(message) {
+  let characters = message.split("");
+  let numOfChars = characters.filter(
+    letter => letter.match(/^[a-zA-Z0-9]*$/) !== null
+  ).length;
+
+  // Message only sends if 25% of the length is from characters and numbers
+  if (numOfChars > message.length * 0.25) {
+    return message;
+  }
+  return null;
+}

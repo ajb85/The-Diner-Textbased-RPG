@@ -1,7 +1,3 @@
-// At a certain point the screen will force the text to wrap.
-// to keep the style, I'm breaking it here.  '@media @break' means
-// I'm adjusting the layout if the screen falls below this size
-@break: ~"(max-width: 760px)";
 .createAcc,
 .selectChar {
   // Create name text/buttons/inputs all in this section
@@ -10,7 +6,7 @@
     .flexAlign(space-between);
     width: 100%;
     //To avoid word wrap, break into columns
-    @media @break {
+    @media @lgBreak {
       flex-direction: column;
     }
   }
@@ -24,7 +20,8 @@
     border-right: 1px solid white;
     height: 100vh;
     width: 50%;
-    @media @break {
+    min-height: 140px;
+    @media @lgBreak {
       border-right: transparent;
       border-bottom: 1px solid white;
       width: 100%;
@@ -33,7 +30,8 @@
   }
   div.inputSide {
     width: 50%;
-    @media @break {
+    min-height: 140px;
+    @media @lgBreak {
       width: 100%;
       height: 50vh;
     }
@@ -43,8 +41,12 @@
     font-size: 3.6rem;
     padding-bottom: 15px;
     text-align: center;
-    @media @break {
+    margin-top: 10px;
+    @media @lgBreak {
       font-size: 4rem;
+    }
+    @media @smBreak {
+      font-size: 3rem;
     }
   }
 
@@ -52,16 +54,22 @@
     padding: 3px;
     font-size: 1.7rem;
     text-align: center;
+
+    @media @smBreak {
+      font-size: 1.5rem;
+    }
   }
   input {
     margin: 10px;
     width: 300px;
     height: 60px;
+    min-height: 30px;
     font-size: 1.8rem;
     text-align: center;
   }
   button.realBtn {
     .defaultSubmitBtn(300px, 40px);
+    min-height: 30px;
   }
   button.noBtn {
     background: transparent;
