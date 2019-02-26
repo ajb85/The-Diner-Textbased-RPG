@@ -27,28 +27,28 @@ function sendEventToUser(toUser, fromUser, type) {
 }
 
 // Functions that listen to the server
-function receiveChat(updateChat) {
+function chatListener(updateChat) {
   console.log("Listening for chat");
   socket.on("chat", res => {
     updateChat(res);
   });
 }
-function receiveCombat(updateCombat) {
+function combatListener(updateCombat) {
   console.log("Listening for combat");
   socket.on("combat", res => {
     updateCombat(res);
   });
 }
-function receiveLogin(onLoginReceive) {
-  socket.on("login", onLoginReceive);
-}
-function updateUserList(cb) {
+// function receiveLogin(onLoginReceive) {
+//   socket.on("login", onLoginReceive);
+// }
+function userlistListener(cb) {
   console.log("Listening for User List");
   socket.on("activeUsers", res => {
     cb(res);
   });
 }
-function onEventReceived(cb) {
+function eventListener(cb) {
   console.log("Listening for Events");
   socket.on("events", res => {
     cb(res);
@@ -60,12 +60,11 @@ export default {
   sendChat,
   sendCombat,
   sendEventToUser,
-  receiveLogin,
   getUserList,
-  updateUserList,
-  receiveChat,
-  onEventReceived,
-  receiveCombat,
+  userlistListener,
+  chatListener,
+  eventListener,
+  combatListener,
   toggleStatus
 };
 

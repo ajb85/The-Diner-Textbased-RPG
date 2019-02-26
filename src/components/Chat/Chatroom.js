@@ -1,23 +1,12 @@
 import React, { Component } from "react";
 import CreateUserList from "./HelperComps/CreateUserList.js";
-import Fight from "./Fight.js";
+import Chatbox from "./Chatbox.js";
 import api from "./api.js";
 
 // props: changeGame, char, userList
 export default class Chatroom extends Component {
   constructor(props) {
     super(props);
-
-    //binding 'this' to all my functions so I don't have to when they're invoked
-    this.handleTyping = this.handleTyping.bind(this);
-    this.submitChat = this.submitChat.bind(this);
-    this.onChatReceive = this.onChatReceive.bind(this);
-    this.onReceiveUserList = this.onReceiveUserList.bind(this); // Local
-    this.receiveRequestAnswer = this.receiveRequestAnswer.bind(this);
-    this.updateStateCondition = this.updateStateCondition.bind(this);
-    this.waveAtUser = this.waveAtUser.bind(this);
-    this.receiveRequest = this.receiveRequest.bind(this);
-    this.processMessages = this.processMessages.bind(this);
 
     this.state = {
       typing: "",
@@ -27,48 +16,37 @@ export default class Chatroom extends Component {
       challenging: "",
       aggressors: []
     };
-    api.updateUserList(this.onReceiveUserList);
-    api.getUserList(this.onReceiveUserList);
-    api.receiveChat(this.onChatReceive);
-    api.onEventReceived(this.receiveRequest);
   }
-  updateStateCondition(condition, value) {
-    this.setState({ [condition]: value });
-  }
-  handleTyping(e) {
-    const maxCharLimit = 164;
-    if (e.target.value.length <= maxCharLimit) {
-      this.setState({ typing: e.target.value });
-    }
-  }
-  submitChat(e) {
-    e.preventDefault();
-    const message = this.state.typing;
-    // OBJ = {name: charName, message:WhatTheyTyped, type: ("emote" || "message")}
-    const name = this.props.char.name;
-    let messageOBJ = formatMessageOBJ(name, message);
-    if (messageOBJ) api.sendChat(messageOBJ);
-    // Reset field
-    this.setState({ typing: "" });
+  componentDidMount() {
+    // Mark user as active in chat, update the current user list
+    api.toggleStatus(this.props.char.name);
+    api.getUserList(this.onuserlistListener);
 
-    return false;
+    // Listen for userlist updates, new chat, and incoming
+    // events from users
+    api.userlistListener(this.onuserlistListener);
+    api.chatListener(this.onChatReceive);
+    api.eventListener(this.onReceiveRequest);
   }
-  onChatReceive(message) {
-    let { chatlog } = this.state;
+
+  updateStateCondition = (condition, value) => {
+    this.setState({ [condition]: value });
+  };
+
+  onChatReceive = message => {
+    let chatlog = [...this.state.chatlog];
     chatlog.push(message);
     if (chatlog.length > 50) {
       chatlog.shift();
     }
     this.setState({ chatlog });
-  }
+  };
 
-  onReceiveUserList(userList) {
+  onuserlistListener = userList => {
     this.setState({ userList });
-  }
-  // receiveUserList(userList) { // Local
-  //   this.setState({ userList }); // Local
-  // }  // Local
-  receiveRequest(eventData) {
+  };
+
+  onReceiveRequest = eventData => {
     let { aggressors } = this.state;
     // Save aggressor names in an array so they can be queued and index zero
     // highlighted in the user list
@@ -76,29 +54,16 @@ export default class Chatroom extends Component {
       eventData.type === "fight" &&
       eventData.fromUser === this.state.challenging
     ) {
-      this.props.changeGame(
-        <Fight
-          char={this.props.char}
-          opponent={eventData.fromUser}
-          changeGame={this.props.changeGame}
-        />
-      );
+      this.props.updateOpponent(eventData.fromUser);
     } else if (eventData.type === "fight") {
       aggressors.push(eventData.fromUser);
       this.setState({ aggressors: [...aggressors] });
     }
-  }
-  receiveRequestAnswer(res) {
-    if (res) {
-      // Load fight
-    } else {
-      //Untested
-      //moved to helper --> this.cancelChallenge();
-    }
-  }
-  waveAtUser(name, test) {
+  };
+
+  waveAtUser = (name, test) => {
     let waveOBJ = { name: this.props.char.name };
-    // Psh, sum people...trying to wave at themselves
+    // Psh, some people...trying to wave at themselves
     if (name === this.props.char.name) {
       waveOBJ.message = `waves at themselves.`;
       waveOBJ.type = "emote";
@@ -108,8 +73,8 @@ export default class Chatroom extends Component {
       waveOBJ.type = "emote";
       api.sendChat(waveOBJ);
     }
-  }
-  processMessages() {
+  };
+  processMessages = () => {
     return [...this.state.chatlog].map(message => {
       if (message.type === "emote") {
         return (
@@ -125,7 +90,7 @@ export default class Chatroom extends Component {
         );
       }
     });
-  }
+  };
 
   render() {
     const { aggressors, selected, challenging } = this.state;
@@ -135,14 +100,11 @@ export default class Chatroom extends Component {
       <div className="container diner">
         <div className="chatContainer">
           <div className="chatlog">{processedMessages}</div>
-          <form onSubmit={this.submitChat}>
-            <input
-              type="text"
-              onChange={this.handleTyping}
-              value={this.state.typing}
-            />
-            <button>Talk</button>
-          </form>
+          <Chatbox
+            submitChat={this.submitChat}
+            handleTyping={this.handleTyping}
+            typing={this.state.typing}
+          />
         </div>
         <div className="buttonsAndList">
           <div className="users">
@@ -159,40 +121,4 @@ export default class Chatroom extends Component {
       </div>
     );
   }
-}
-
-function formatMessageOBJ(name, message) {
-  const filtered = filterBadMessage(message);
-  if (!filtered) return null;
-
-  let messageOBJ = { name: name };
-  const split = filtered.split(" ");
-
-  // If user starts message with /me send a message emote without /me included
-
-  if (split[0].toLowerCase() === "/me") {
-    messageOBJ.message = split.slice(1).join(" ");
-    messageOBJ.type = "emote";
-    // Otherwise send as a normal message
-  } else {
-    messageOBJ.message = message;
-    messageOBJ.type = "message";
-  }
-
-  return messageOBJ;
-}
-
-function filterBadMessage(message) {
-  let characters = message.split("");
-  let numOfChars = characters.filter(
-    letter => letter.match(/^[a-zA-Z0-9]*$/) !== null
-  ).length;
-
-  // Message only sends if 25% of the length is from characters and numbers:
-  //if (numOfChars > message.length * 0.25) {
-  // At least one character/number in the message:
-  if (numOfChars > 0) {
-    return message;
-  }
-  return null;
 }

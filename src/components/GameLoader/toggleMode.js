@@ -8,15 +8,23 @@ userList={this.state.userList}
 const toggleMode = Chatroom => FightMode =>
   class extends Component {
     render() {
-      // Leaving the option open for extra modes
-      if (this.props.mode === "chat") {
+      if (!this.props.opponent) {
         console.log("Loading Chat");
         return (
-          <Chatroom char={this.props.char} userList={this.props.userList} />
+          <Chatroom
+            char={this.props.char}
+            updateOpponent={this.props.updateOpponent}
+          />
         );
-      } else if (this.props.mode === "fight") {
+      } else {
         console.log("Entering Fight");
-        return <FightMode />;
+        return (
+          <FightMode
+            char={this.props.char}
+            opponent={this.props.opponent}
+            updateOpponent={this.props.updateOpponent}
+          />
+        );
       }
     }
   };

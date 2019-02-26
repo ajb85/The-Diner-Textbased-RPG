@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Chatroom from "../Chat/Chatroom.js";
 import Fight from "../Fight/Fight.js";
 import toggleMode from "./toggleMode.js";
-import api from "../../api.js";
 /*
 Props:
 loadPage={props.loadPage}
@@ -12,16 +11,11 @@ export default class GameLoader extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { userlist: [], mode: "chat" };
-  }
-  componentDidMount() {
-    api.getUserList(this.updateUserlist);
-    api.toggleStatus(this.props.char.name);
+    this.state = { opponent: "" };
   }
 
-  updateUserlist = userlist => {
-    // Update userlist when received
-    this.setState({ userlist });
+  updateOpponent = opponent => {
+    this.setState({ opponent });
   };
 
   updateMode = mode => {
@@ -35,8 +29,8 @@ export default class GameLoader extends Component {
     return (
       <Mode
         char={this.props.char}
-        mode={this.state.mode}
-        userList={this.state.userList}
+        mode={this.state.opponent}
+        updateOpponent={this.updateOpponent}
       />
     );
   }

@@ -24,7 +24,7 @@ export default class Fight extends Component {
     this.sendCombatMessage = this.sendCombatMessage.bind(this);
     this.executeAttack = this.executeAttack.bind(this);
 
-    api.receiveCombat(this.onCombatReceive);
+    api.combatListener(this.onCombatReceive);
   }
   pickWeapon(weapon) {
     this.setState({ weapon: this.createWeaponClass(weapon) });
