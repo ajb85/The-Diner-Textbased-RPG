@@ -6,7 +6,7 @@ import Fight from "../Fight.js";
 export default class GamePageMgr extends Component {
   constructor(props) {
     super(props);
-    this.changeGame = this.changeGame.bind(this);
+
     this.state = {
       gamePage: (
         <Diner
@@ -17,7 +17,8 @@ export default class GamePageMgr extends Component {
       )
     };
   }
-  changeGame(gamePage) {
+
+  changeGame = gamePage => {
     if (gamePage === "Diner") {
       this.setState({
         gamePage: (
@@ -31,7 +32,7 @@ export default class GamePageMgr extends Component {
     } else {
       this.setState({ gamePage });
     }
-  }
+  };
 
   render() {
     return <div>{this.state.gamePage}</div>;

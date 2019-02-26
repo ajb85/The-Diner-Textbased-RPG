@@ -458,6 +458,9 @@ p {
   justify-content: center;
   align-items: center;
 }
+.diner img {
+  width: 40px;
+}
 div.chatContainer {
   height: 100vh;
   min-height: 200px;

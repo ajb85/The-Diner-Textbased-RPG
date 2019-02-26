@@ -97,13 +97,16 @@ export default class Diner extends Component {
     }
   }
   waveAtUser(name, test) {
+    let waveOBJ = { name: this.props.char.name };
     // Psh, sum people...trying to wave at themselves
     if (name === this.props.char.name) {
-      api.sendChat(
-        `*${name} clinches their own anus and runs screeching head first into the wall*`
-      );
+      waveOBJ.message = `waves at themselves.`;
+      waveOBJ.type = "emote";
+      api.sendChat(waveOBJ);
     } else {
-      api.sendChat(`*${this.props.char.name} waves at ${name}*`);
+      waveOBJ.message = `waves at ${name}`;
+      waveOBJ.type = "emote";
+      api.sendChat(waveOBJ);
     }
   }
   processMessages() {
@@ -185,8 +188,10 @@ function filterBadMessage(message) {
     letter => letter.match(/^[a-zA-Z0-9]*$/) !== null
   ).length;
 
-  // Message only sends if 25% of the length is from characters and numbers
-  if (numOfChars > message.length * 0.25) {
+  // Message only sends if 25% of the length is from characters and numbers:
+  //if (numOfChars > message.length * 0.25) {
+  // At least one character/number in the message:
+  if (numOfChars > 0) {
     return message;
   }
   return null;

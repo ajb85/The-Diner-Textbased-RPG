@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import fightIMG from "../img/lilking-Jeweled-Sword.png";
 /* Props: target, CONTEXT FUNCTIONS, char*/
 export default class CreateCombatButton extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class CreateCombatButton extends Component {
   selectedUser() {
     const challengeButton = (
       <button onClick={this.props.challengeUser.bind(this, this.props.target)}>
-        Fight
+        <img src={fightIMG} />
       </button>
     );
     const waveButton = (

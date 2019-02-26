@@ -12,6 +12,7 @@ io.on("connection", socket => {
     // on the user list but be unreachable
     if (!activeUsers[name]) {
       activeUsers[name] = socket;
+      console.log(`${name} has connected`);
       broadCastMessage("activeUsers", Object.keys(activeUsers));
       cb(name);
     } else {
