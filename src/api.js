@@ -1,6 +1,5 @@
 //
 const io = require("socket.io-client");
-//const url = "ajbrush.com";
 const socket = io.connect(window.location.hostname, { path: "/node" });
 socket.on("error", function(err) {
   console.log("received socket error:");
@@ -10,6 +9,9 @@ socket.on("error", function(err) {
 // Functions that talk to the server
 function sendLogin(name, cb) {
   socket.emit("login", name, cb);
+}
+function toggleStatus(name) {
+  socket.emit("status", name);
 }
 function sendChat(messageOBJ) {
   socket.emit("chat", messageOBJ);
@@ -63,7 +65,8 @@ export default {
   updateUserList,
   receiveChat,
   onEventReceived,
-  receiveCombat
+  receiveCombat,
+  toggleStatus
 };
 
 // function sendLogin(name) {

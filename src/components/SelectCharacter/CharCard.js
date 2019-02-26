@@ -2,7 +2,6 @@ import React, { Component } from "react";
 /*
 Props:
 char={this.state.chars[charNum]}
-charKey={charKey}
 */
 
 export default function CharCard(props) {
@@ -10,30 +9,31 @@ export default function CharCard(props) {
   const { name, str, dex, intel, luck } = props.char;
 
   return (
-    <div
-      className="charCard"
-      onClick={() => this.handleCharSelect(props.charKey)}
-    >
+    <div className="charCard" onClick={() => this.handleCharSelect(props.char)}>
       <div>
-        <h2 className="nameTitle">{props.char.name}</h2>
+        <h2 className="nameTitle">{name}</h2>
         <h2 className="thisIsMeTitle">This is Me</h2>
       </div>
       <div className="statContainer">
         <div className="stat">
-          <p>Appetite:</p> <p className="str">{char.str}</p>
+          <p>Appetite:</p>
+          <p className="str">{str}</p>
         </div>
         <div className="stat">
-          <p>Etiquette:</p> <p className="dexLight">{char.dex}</p>
+          <p>Etiquette:</p>
+          <p className="dexLight">{dex}</p>
         </div>
         <div className="stat">
-          <p>Foodie:</p> <p className="intel">{char.intel}</p>
+          <p>Foodie:</p>
+          <p className="intel">{intel}</p>
         </div>
         <div className="stat">
-          <p>Luck:</p> <p className="luck">{char.luck}</p>
+          <p>Luck:</p>
+          <p className="luck">{luck}</p>
         </div>
       </div>
 
-      <button className={buttonColor}>This Is Me</button>
+      <button className={buttonClass}>This Is Me</button>
     </div>
   );
 }

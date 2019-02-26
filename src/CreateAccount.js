@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CharSelect from "./components/Character/CharSelect.js";
+import SelectCharacter from "./components/SelectCharacter/SelectCharacter.js";
 import textData from "./data/createAcc.json";
 import gFunc from "./GlobalFunctions";
 import api from "./api.js";
@@ -13,21 +13,20 @@ export default class CreateAcc extends Component {
   // Submits the name to the server.
   submitName = e => {
     e.preventDefault();
-    api.sendLogin(this.state.name, this.loginResponse);
+    api.sendLogin(this.state.name, this.isNameApproved);
   };
 
   //Receive response from server, move to next page or deny login
-  loginResponse = res => {
-    if (res) {
+  isNameApproved = approved => {
+    if (approved) {
       this.props.loadPage(
-        <CharSelect
+        <SelectCharacter
           loadPage={this.props.loadPage}
           name={this.state.name}
-          userList={res}
         />
       );
     } else {
-      this.setState({ badLogin: 1 });
+      this.setState({ badLogin: true });
     }
   };
 

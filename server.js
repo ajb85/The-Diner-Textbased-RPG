@@ -1,33 +1,37 @@
-//
 const server = require("http").createServer();
 const io = require("socket.io")(server, { path: "/" });
 
-let activeUsers = {};
+const activeUsers = {};
 
 io.on("connection", socket => {
-  // User logins
   socket.on("login", (name, cb) => {
-    //Trying id:name.  I realize the lookup would be easier with name:id
-    // ISSUE: users log in and can sit at character select.  They'll appear
-    // on the user list but be unreachable
-    if (!activeUsers[name]) {
-      activeUsers[name] = socket;
+    // Receive a name from the user.  If it's unique, add them to the activeUsers
+    // object and broadcast the current list of users out to all connected
+    // clients
+
+    // If the name is taken, return false to the callback
+
+    // Note: the user still has to select their character bofore they can
+    // see chat.  They are set to active so users know they haven't joined yet
+    if (!activeUsers.hasOwnProperty(name)) {
+      activeUsers[name] = { socket, active: false };
       console.log(`${name} has connected`);
-      broadCastMessage("activeUsers", Object.keys(activeUsers));
+      const usersStatus = getUserlistObject();
+      broadCastMessage("activeUsers", usersStatus);
       cb(name);
     } else {
-      cb(0);
+      cb(false);
     }
   });
 
-  // User chats
   socket.on("chat", messageOBJ => {
+    // User sends a message, send message to all clients
     broadCastMessage("chat", messageOBJ);
   });
 
-  // User disconnects
   socket.on("disconnect", name => {
-    console.log(name);
+    // User disconnects, currently not working
+    console.log("User left: ", name);
     // Possible to feed a name?
     for (let user in activeUsers) {
       if (activeUsers[user] === socket) {
@@ -37,47 +41,62 @@ io.on("connection", socket => {
     }
   });
 
-  // User disconnects
-  //socket.on("disconnect", handleDisconnect.bind(socket.id));
-
-  // Update list of current users
   socket.on("userList", cb => {
-    cb(Object.keys(activeUsers));
+    // Update list of current users
+    cb(getUserlistObject());
   });
+
   socket.on("activeUsers", cb => {
-    socket.emit(cb(Object.keys(activeUsers)));
+    // Send a list of active users to the client
+    socket.emit(cb(getUserlistObject()));
   });
 
-  // Console log errors
-  socket.on("error", function(err) {
-    console.log("received error from client:", client.id);
-    console.log(err);
+  socket.on("status", (name, status) => {
+    // Toggle the status of a user between active,inactive
+    activeUsers[name].active = !activeUsers[name].active;
   });
-  // Public broadcasts
 
-  // Broad cast to everyone in a room
-  function broadCastMessage(room, message) {
-    for (let user in activeUsers) {
-      activeUsers[user].emit(room, message);
-    }
-  }
-  // Private broadcasts
-
-  // Send invites to each other
   socket.on("events", eventData => {
+    // Users send an invite/event to each other
     socket.broadcast.to(activeUsers[eventData.toUser].id).emit("events", {
       fromUser: eventData.fromUser,
       type: eventData.type
     });
   });
-  // Send combat data between users
+
   socket.on("combat", combatData => {
-    //socket.emit("combat", combatData.message);
+    // Send combat data between users
     socket.broadcast
       .to(activeUsers[combatData.toUser].id)
       .emit("combat", combatData.message);
   });
+
+  socket.on("error", err => {
+    // Console log errors
+    console.log("received error from client:", client.id);
+    console.log(err);
+  });
+
+  const broadCastMessage = (room, message) => {
+    // Public broadcast
+    // Broad cast to everyone in a room
+    for (let user in activeUsers) {
+      activeUsers[user].emit(room, message);
+    }
+  };
 }); // io.on connection
+
+function getUserlistObject() {
+  let userAndStatus = {};
+  for (let user in activeUsers) {
+    userAndStatus[user] = {
+      name: user,
+      active: activeUsers[user].active
+    };
+  }
+
+  return userAndStatus;
+}
 
 const port = 28890;
 server.listen(port);

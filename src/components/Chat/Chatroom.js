@@ -4,7 +4,7 @@ import Fight from "./Fight.js";
 import api from "./api.js";
 
 // props: changeGame, char, userList
-export default class Diner extends Component {
+export default class Chatroom extends Component {
   constructor(props) {
     super(props);
 
