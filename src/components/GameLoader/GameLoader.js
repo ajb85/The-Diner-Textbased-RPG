@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Chatroom from "../Chat/Chatroom.js";
+import Chatroom from "../Chatroom/Chatroom.js";
 import Fight from "../Fight/Fight.js";
 import toggleMode from "./toggleMode.js";
 /*

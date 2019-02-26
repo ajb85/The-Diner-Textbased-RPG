@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import fightIMG from "../img/lilking-Jeweled-Sword.png";
-/* Props: target, CONTEXT FUNCTIONS, char*/
-export default class CreateCombatButton extends Component {
-  constructor(props) {
-    super(props);
-    this.aggressiveUser = this.aggressiveUser.bind(this);
-    this.selectedUser = this.selectedUser.bind(this);
-  }
+/*
+Props:
+target={user}
+actions={callbacks}
+*/
 
-  aggressiveUser() {
+export default function ContextButtons(props) {
+  const aggressiveUser = () => {
     const acceptButton = (
-      <button onClick={this.props.acceptFight.bind(this, this.props.target)}>
+      <button onClick={()=>props.actions.fight(this.props.target)}>
         ✓
       </button>
     );
@@ -46,12 +45,11 @@ export default class CreateCombatButton extends Component {
   }
   render() {
     let actionButtons = [];
-    if (this.props.acceptFight) {
+    if (this.props.actions.hasOwnProperty("fight")) {
+      // User is aggressive, give fight/decline buttons when selected
       actionButtons = this.aggressiveUser();
-    } else if (
-      this.props.challengeUser &&
-      this.props.char !== this.props.target
-    ) {
+    } else if (this.props.actions.hasOwnProperty("challenge")) {
+      // Otherwise, give normal buttons
       actionButtons = this.selectedUser();
     }
 
