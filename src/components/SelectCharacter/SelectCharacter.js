@@ -1,9 +1,11 @@
-import React, { Component } from "react";
-import textData from "../../data/charSelect.json";
-import gFunc from "../../GlobalFunctions.js";
-import Character from "./Character.js";
+import React from "react";
+
+import Character from "./Classes/Character.js";
 import GameLoader from "../GameLoader/GameLoader.js";
 import CharCard from "./CharCard.js";
+
+import textData from "../../data/charSelect.json";
+import gFunc from "../../GlobalFunctions.js";
 
 /*
 Props:
@@ -31,8 +33,10 @@ export default function CharSelect(props) {
   const charCards = [];
 
   for (let i = 0; i <= 4; i++) {
-    const char = this.rollChar();
-    charCards.push(<CharCard char={char} key={char} />);
+    const char = rollChar();
+    charCards.push(
+      <CharCard char={char} key={char} handleSelect={handleCharSelect} />
+    );
   } // end loop
 
   return (

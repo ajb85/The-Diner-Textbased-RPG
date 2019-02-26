@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Userlist from "./HelperComps/Userlist.js";
+import Userlist from "./Userlist.js";
 import Chatbox from "./Chatbox.js";
 import Chatlog from "./Chatlog.js";
-import api from "./api.js";
+import api from "../../api.js";
 
 /*
 Props:
@@ -16,8 +16,6 @@ export default class Chatroom extends Component {
   }
 
   render() {
-    const { aggressors, selected, challenging } = this.state;
-    const stateConditions = { aggressors, selected, challenging };
     return (
       <div className="container diner">
         <div className="chatContainer">

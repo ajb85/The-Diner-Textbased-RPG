@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import api from "./api.js";
+import api from "../../api.js";
 /*
 Props:
 
@@ -31,7 +31,7 @@ export default class Chatlog extends Component {
             {message.name} {message.message}
           </p>
         );
-      } else if (message.type === "message") {
+      } /*else if (message.type === "message")*/ else {
         return (
           <p className="message">
             {message.name} says: {message.message}

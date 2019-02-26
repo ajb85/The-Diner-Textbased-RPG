@@ -1,5 +1,5 @@
 import Weapon from "./Weapon.js";
-import gFunc from "../GlobalFunctions.js";
+import gFunc from "../../../GlobalFunctions.js";
 
 export default class Sharp extends Weapon {
   constructor(attrs) {

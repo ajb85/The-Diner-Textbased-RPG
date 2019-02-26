@@ -1,5 +1,5 @@
-//import React, {Component} from "react";
-import gFunc from "../GlobalFunctions.js";
+import gFunc from "../../../GlobalFunctions.js";
+
 export default class Weapon {
   constructor(attrs) {
     //super(attrs);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import weaponsData from "../data/weapons.json";
-import gFunc from "../GlobalFunctions.js";
+import weaponsData from "../../data/weapons.json";
+import gFunc from "../../GlobalFunctions.js";
 
 // props: char, pickWeapon
 export default class SelectWeapon extends Component {

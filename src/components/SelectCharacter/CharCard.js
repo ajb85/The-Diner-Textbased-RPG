@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 /*
 Props:
 char={this.state.chars[charNum]}
@@ -9,7 +9,7 @@ export default function CharCard(props) {
   const { name, str, dex, intel, luck } = props.char;
 
   return (
-    <div className="charCard" onClick={() => this.handleCharSelect(props.char)}>
+    <div className="charCard" onClick={() => props.handleSelect(props.char)}>
       <div>
         <h2 className="nameTitle">{name}</h2>
         <h2 className="thisIsMeTitle">This is Me</h2>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import api from "./api.js";
+import api from "../../api.js";
 /*
 Props:
 name

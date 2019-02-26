@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import Fight from "../Fight.js";
 import ContextButtons from "./ContextButtons.js";
-import api from "../api.js";
+import api from "../../api.js";
 
 /* props:
 char={this.props.char}
@@ -132,11 +131,12 @@ export default class Userlist extends Component {
       this.props.char.name,
       "fight"
     );
-    this.props.changeGame(<Fight char={this.props.char} opponent={opponent} />);
+    //this.props.changeGame(<Fight char={this.props.char} opponent={opponent} />);
   };
 
   buildUserlist = () => {
     const { selected, challenging, aggressors } = this.state;
+    let callbacks;
 
     return this.state.userlist.map((user, i) => {
       switch (user) {
@@ -148,10 +148,9 @@ export default class Userlist extends Component {
               </p>
             </div>
           );
-          break;
 
         case aggressors[0]:
-          const callbacks = {
+          callbacks = {
             fight: this.acceptFight,
             decline: this.declineFight
           };
@@ -161,10 +160,9 @@ export default class Userlist extends Component {
               <ContextButtons target={user} actions={callbacks} />
             </div>
           );
-          break;
 
         case selected:
-          const callbacks = {
+          callbacks = {
             challenge: this.challengeUser,
             wave: this.waveAtUser
           };
@@ -176,7 +174,6 @@ export default class Userlist extends Component {
               <ContextButtons target={user} actions={callbacks} />
             </div>
           );
-          break;
 
         default:
           return (
@@ -194,6 +191,6 @@ export default class Userlist extends Component {
     if (this.state && this.state.userlist.length) {
       userlist = this.buildUserlist();
     }
-    return <div className="users">userlist</div>;
+    return <div className="users">{userlist}</div>;
   }
 }

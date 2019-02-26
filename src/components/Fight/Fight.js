@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import SelectWeapon from "./HelperComps/SelectWeapon.js";
-import CombatTurn from "./HelperComps/CombatTurn.js";
+import SelectWeapon from "./SelectWeapon.js";
+import CombatTurn from "./CombatTurn.js";
 import Blunt from "./Classes/Blunt.js";
 import Sharp from "./Classes/Sharp.js";
 import Food from "./Classes/Food.js";
 import Death from "./Death.js";
-import api from "./api.js";
+import api from "../../api.js";
 // props: char, opponent, gamepage
 export default class Fight extends Component {
   constructor(props) {

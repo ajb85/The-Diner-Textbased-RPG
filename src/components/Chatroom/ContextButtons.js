@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import fightIMG from "../img/lilking-Jeweled-Sword.png";
+import React from "react";
+
 /*
 Props:
 target={user}
@@ -9,14 +9,10 @@ actions={callbacks}
 export default function ContextButtons(props) {
   const aggressiveUser = () => {
     const acceptButton = (
-      <button onClick={()=>props.actions.fight(this.props.target)}>
-        ✓
-      </button>
+      <button onClick={() => props.actions.fight(this.props.target)}>✓</button>
     );
     const cancelButton = (
-      <button onClick={this.props.declineFight.bind(this, this.props.target)}>
-        X
-      </button>
+      <button onClick={() => props.actions.declineFight()}>X</button>
     );
     return (
       <div className="actionButtons">
@@ -24,16 +20,17 @@ export default function ContextButtons(props) {
         {cancelButton}
       </div>
     );
-  }
-  selectedUser() {
+  };
+
+  const selectedUser = () => {
     const challengeButton = (
-      <button onClick={this.props.challengeUser.bind(this, this.props.target)}>
-        <img src={fightIMG} />
+      <button onClick={() => props.actions.challengeUser(this.props.target)}>
+        <i class="fas fa-swords" />
       </button>
     );
     const waveButton = (
-      <button onClick={this.props.wave.bind(this, this.props.target)}>
-        Wave
+      <button onClick={props.actions.wave(this.props.target)}>
+        <i class="fas fa-hand-paper" />
       </button>
     );
     return (
@@ -42,17 +39,16 @@ export default function ContextButtons(props) {
         {waveButton}
       </div>
     );
+  };
+  // Render
+  let actionButtons = [];
+  if (this.props.actions.hasOwnProperty("fight")) {
+    // User is aggressive, give fight/decline buttons when selected
+    actionButtons = aggressiveUser();
+  } else if (this.props.actions.hasOwnProperty("challenge")) {
+    // Otherwise, give normal buttons
+    actionButtons = selectedUser();
   }
-  render() {
-    let actionButtons = [];
-    if (this.props.actions.hasOwnProperty("fight")) {
-      // User is aggressive, give fight/decline buttons when selected
-      actionButtons = this.aggressiveUser();
-    } else if (this.props.actions.hasOwnProperty("challenge")) {
-      // Otherwise, give normal buttons
-      actionButtons = this.selectedUser();
-    }
 
-    return actionButtons;
-  }
+  return actionButtons;
 }
