@@ -25,14 +25,14 @@ export default function CharSelect(props) {
 
   const handleCharSelect = char => {
     // Pass the selected char to the GameLoader
-    this.props.loadPage(<GameLoader loadPage={props.loadPage} char={char} />);
+    props.loadPage(<GameLoader loadPage={props.loadPage} char={char} />);
   };
 
   const header = <h1>{textData.h1}</h1>;
   const paragraph = gFunc.splitString(textData.p);
   const charCards = [];
 
-  for (let i = 0; i <= 4; i++) {
+  for (let i = 0; i < 4; i++) {
     const char = rollChar();
     charCards.push(
       <CharCard char={char} key={char} handleSelect={handleCharSelect} />

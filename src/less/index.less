@@ -1,10 +1,17 @@
-@import "variables.less";
-@import "mixins.less";
-@import "reset.less";
-@import "global.less";
-@import "createAcc.less";
-@import "createChar.less";
-@import "diner.less";
-@import "fight.less";
-@import "selectWeapon.less";
-@import "death.less";
+// Code that applies to all components
+@import "global/variables.less";
+@import "global/mixins.less";
+@import "global/reset.less";
+@import "global/global.less";
+
+// Code that applies to creating an account / selecting a char
+@import "createChar/createAcc.less";
+@import "createChar/createChar.less";
+
+// Code the the chat room
+@import "chat/diner.less";
+
+// Code for the fight minigame
+@import "fight/fight.less";
+@import "fight/selectWeapon.less";
+@import "fight/death.less";

@@ -19,8 +19,8 @@ function sendChat(messageOBJ) {
 function sendCombat(toUser, message) {
   socket.emit("combat", { toUser, message });
 }
-function getUserList(cb) {
-  socket.emit("userList", cb);
+function getUserlist(cb) {
+  socket.emit("userlist", cb);
 }
 function sendEventToUser(toUser, fromUser, type) {
   socket.emit("events", { toUser, fromUser, type });
@@ -60,7 +60,7 @@ export default {
   sendChat,
   sendCombat,
   sendEventToUser,
-  getUserList,
+  getUserlist,
   userlistListener,
   chatListener,
   eventListener,

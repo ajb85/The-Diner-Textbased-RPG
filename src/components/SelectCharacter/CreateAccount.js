@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import SelectCharacter from "./components/SelectCharacter/SelectCharacter.js";
-import textData from "./data/createAcc.json";
-import gFunc from "./GlobalFunctions";
-import api from "./api.js";
+import SelectCharacter from "./SelectCharacter.js";
+import textData from "../../data/createAcc.json";
+import gFunc from "../../GlobalFunctions";
+import api from "../../api.js";
 
 export default class CreateAcc extends Component {
   constructor(props) {
@@ -13,7 +13,9 @@ export default class CreateAcc extends Component {
   // Submits the name to the server.
   submitName = e => {
     e.preventDefault();
-    api.sendLogin(this.state.name, this.isNameApproved);
+    if (this.state.name.length > 2) {
+      api.sendLogin(this.state.name, this.isNameApproved);
+    }
   };
 
   //Receive response from server, move to next page or deny login
@@ -45,7 +47,7 @@ export default class CreateAcc extends Component {
     // Check the name is long enough then display the button
     if (this.state && this.state.name && this.state.name.length > 2) {
       submitBtn = (
-        <button className="realBtn" onClick={() => this.submitName()}>
+        <button type="submit" className="realBtn">
           My name is {this.state.name}
         </button>
       );
@@ -67,7 +69,7 @@ export default class CreateAcc extends Component {
             {header}
             {paragraph}
           </div>
-          <div className="inputSide">
+          <form className="inputSide" onSubmit={e => this.submitName(e)}>
             <input
               className="inputName"
               onChange={this.onNameInputChange}
@@ -76,7 +78,7 @@ export default class CreateAcc extends Component {
               autoFocus={true}
             />
             {submitBtn}
-          </div>
+          </form>
         </section>
       </div>
     );

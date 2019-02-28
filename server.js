@@ -5,6 +5,7 @@ const activeUsers = {};
 
 io.on("connection", socket => {
   socket.on("login", (name, cb) => {
+    console.log(`${name} gave their name`);
     // Receive a name from the user.  If it's unique, add them to the activeUsers
     // object and broadcast the current list of users out to all connected
     // clients
@@ -41,7 +42,7 @@ io.on("connection", socket => {
     }
   });
 
-  socket.on("userList", cb => {
+  socket.on("userlist", cb => {
     // Update list of current users
     cb(getUserlistObject());
   });
@@ -81,7 +82,7 @@ io.on("connection", socket => {
     // Public broadcast
     // Broad cast to everyone in a room
     for (let user in activeUsers) {
-      activeUsers[user].emit(room, message);
+      activeUsers[user].socket.emit(room, message);
     }
   };
 }); // io.on connection

@@ -11,7 +11,7 @@ export default class Userlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userlist: [],
+      userlist: {},
       selected: "",
       challenging: "",
       aggressors: []
@@ -139,11 +139,15 @@ export default class Userlist extends Component {
     let callbacks;
 
     return this.state.userlist.map((user, i) => {
-      switch (user) {
+      let pClassName;
+      if (!user.active) {
+        pClassName = "inactive";
+      }
+      switch (user.name) {
         case challenging:
           return (
             <div className="challenging">
-              <p key={user} onClick={this.selectUser}>
+              <p className={pClassName} key={user} onClick={this.selectUser}>
                 {user}
               </p>
             </div>
@@ -156,7 +160,9 @@ export default class Userlist extends Component {
           };
           return (
             <div className="aggressor" key={user}>
-              <p onClick={this.selectUser}>{user}</p>
+              <p className={pClassName} onClick={this.selectUser}>
+                {user}
+              </p>
               <ContextButtons target={user} actions={callbacks} />
             </div>
           );
@@ -168,7 +174,7 @@ export default class Userlist extends Component {
           };
           return (
             <div className="selected">
-              <p key={user} onClick={this.selectUser}>
+              <p className={pClassName} key={user} onClick={this.selectUser}>
                 {user}
               </p>
               <ContextButtons target={user} actions={callbacks} />
@@ -177,7 +183,7 @@ export default class Userlist extends Component {
 
         default:
           return (
-            <p key={user} onClick={this.selectUser}>
+            <p key={user} className={pClassName} onClick={this.selectUser}>
               {user}
             </p>
           );

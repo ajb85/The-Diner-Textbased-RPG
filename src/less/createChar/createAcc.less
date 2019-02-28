@@ -11,8 +11,8 @@
     }
   }
   // two divs: one for text, one for the form
-  div {
-    .flexAlign();
+  div, form {
+    .flexAlign;
     flex-direction: column;
     padding: 30px;
   }
@@ -28,7 +28,8 @@
       height: 50vh;
     }
   }
-  div.inputSide {
+  
+  .inputSide {
     width: 50%;
     min-height: 140px;
     @media @lgBreak {

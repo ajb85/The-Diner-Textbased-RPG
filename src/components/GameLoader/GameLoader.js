@@ -24,7 +24,6 @@ export default class GameLoader extends Component {
 
   render() {
     const Mode = toggleMode(Chatroom)(Fight);
-    console.log("HOC: ", Mode);
 
     return (
       <Mode

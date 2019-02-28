@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CreateAccount from "./CreateAccount.js";
+import CreateAccount from "./components/SelectCharacter/CreateAccount.js";
 
 export default class PageMgr extends Component {
   constructor() {
