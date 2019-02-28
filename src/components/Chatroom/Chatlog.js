@@ -7,7 +7,6 @@ Props:
 export default class Chatlog extends Component {
   constructor() {
     super();
-
     this.state = { chatlog: [] };
   }
   componentDidMount() {
@@ -25,9 +24,9 @@ export default class Chatlog extends Component {
 
   processMessages = () => {
     return [...this.state.chatlog].map(message => {
-      if (message.type === "emote") {
+      if (message.type === "emote" || message.type === "system") {
         return (
-          <p className="emote">
+          <p className={message.type}>
             {message.name} {message.message}
           </p>
         );

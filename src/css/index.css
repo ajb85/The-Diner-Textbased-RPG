@@ -487,6 +487,9 @@ div.chatContainer div.chatlog {
 div.chatContainer div.chatlog p.emote {
   color: #66816d;
 }
+div.chatContainer div.chatlog p.system {
+  color: #d65c70;
+}
 div.chatContainer form {
   margin-top: 0.5vh;
   padding: 5px 5px 5px 0;
@@ -524,6 +527,9 @@ div.buttonsAndList div.users p {
   cursor: pointer;
   font-size: 2rem;
   margin: 5px 10px;
+}
+div.buttonsAndList div.users p.inactive,
+div.buttonsAndList div.users i.inactive {
   -webkit-user-select: none;
   /* Chrome all / Safari all */
   -moz-user-select: none;
@@ -532,6 +538,11 @@ div.buttonsAndList div.users p {
   /* IE 10+ */
   user-select: none;
   /* Likely future */
+}
+div.buttonsAndList div.users p.inactive inactive,
+div.buttonsAndList div.users i.inactive inactive {
+  font-style: italic;
+  opacity: 0.65;
 }
 div.buttonsAndList div.users button {
   background: transparent;

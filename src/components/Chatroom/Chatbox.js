@@ -20,11 +20,10 @@ export default class Chatbox extends Component {
 
   sendChat = e => {
     e.preventDefault();
+
     // Build chat object to send to api
-    const name = this.props.char.name;
-    const message = this.state.typing;
     // OBJ = {name: name, message: message, type: ("emote" || "message")}
-    let chatObj = getChatObj(name, message);
+    let chatObj = getChatObj(this.props.name, this.state.typing);
     if (chatObj) {
       api.sendChat(chatObj);
     }

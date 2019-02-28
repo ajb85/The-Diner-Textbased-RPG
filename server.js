@@ -17,8 +17,7 @@ io.on("connection", socket => {
     if (!activeUsers.hasOwnProperty(name)) {
       activeUsers[name] = { socket, active: false };
       console.log(`${name} has connected`);
-      const usersStatus = getUserlistObject();
-      broadCastMessage("activeUsers", usersStatus);
+      broadCastMessage("activeUsers", getUserlistArr());
       cb(name);
     } else {
       cb(false);
@@ -35,7 +34,7 @@ io.on("connection", socket => {
     console.log("User left: ", name);
     // Possible to feed a name?
     for (let user in activeUsers) {
-      if (activeUsers[user] === socket) {
+      if (activeUsers[user].socket === socket) {
         delete activeUsers[user];
       }
       broadCastMessage("activeUsers", Object.keys(activeUsers));
@@ -44,25 +43,29 @@ io.on("connection", socket => {
 
   socket.on("userlist", cb => {
     // Update list of current users
-    cb(getUserlistObject());
+    cb(getUserlistArr());
   });
 
   socket.on("activeUsers", cb => {
     // Send a list of active users to the client
-    socket.emit(cb(getUserlistObject()));
+    socket.emit(cb(getUserlistArr()));
   });
 
   socket.on("status", (name, status) => {
     // Toggle the status of a user between active,inactive
     activeUsers[name].active = !activeUsers[name].active;
+    broadCastMessage("activeUsers", getUserlistArr());
   });
 
   socket.on("events", eventData => {
+    console.log("SendingEvent: ", eventData);
     // Users send an invite/event to each other
-    socket.broadcast.to(activeUsers[eventData.toUser].id).emit("events", {
-      fromUser: eventData.fromUser,
-      type: eventData.type
-    });
+    socket.broadcast
+      .to(activeUsers[eventData.toUser].socket.id)
+      .emit("events", {
+        fromUser: eventData.fromUser,
+        type: eventData.type
+      });
   });
 
   socket.on("combat", combatData => {
@@ -87,13 +90,13 @@ io.on("connection", socket => {
   };
 }); // io.on connection
 
-function getUserlistObject() {
-  let userAndStatus = {};
+function getUserlistArr() {
+  let userAndStatus = [];
   for (let user in activeUsers) {
-    userAndStatus[user] = {
+    userAndStatus.push({
       name: user,
       active: activeUsers[user].active
-    };
+    });
   }
 
   return userAndStatus;

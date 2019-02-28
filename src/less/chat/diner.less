@@ -30,6 +30,9 @@ div.chatContainer {
     p.emote {
       color: @accent4;
     }
+    p.system {
+      color: @accent1;
+    }
   }
   form {
     margin-top: 0.5vh;
@@ -70,6 +73,14 @@ div.buttonsAndList {
       cursor: pointer;
       font-size: 2rem;
       margin: 5px 10px;
+    }
+    // Style for inactive users/buttons
+    p.inactive,
+    i.inactive {
+      inactive {
+        font-style: italic;
+        opacity: 0.65;
+      }
 
       // Credit: https://css-tricks.com/almanac/properties/u/user-select/
       // Text won't highlight
@@ -95,9 +106,6 @@ div.buttonsAndList {
       .flexAlign(space-between);
       p {
         width: 40%;
-        &.inactive {
-          font-style: italic;
-        }
       }
     }
     // Style after another user clicks challenge button on this user's name
@@ -126,6 +134,8 @@ div.buttonsAndList {
     //   border: 1px solid white;
     // }
   }
+
+  // Users who aren't active in chat show in italics
 
   div.actionButton {
     width: 100%;
