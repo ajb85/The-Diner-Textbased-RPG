@@ -13,11 +13,11 @@ function sendLogin(name, cb) {
 function toggleStatus(name) {
   socket.emit("status", name);
 }
-function sendChat(messageOBJ) {
-  socket.emit("chat", messageOBJ);
+function sendChat(chatOBJ) {
+  socket.emit("chat", chatOBJ);
 }
-function sendCombat(toUser, message) {
-  socket.emit("combat", { toUser, message });
+function sendCombat(msgOBJ) {
+  socket.emit("combat", msgOBJ);
 }
 function getUserlist(cb) {
   socket.emit("userlist", cb);
@@ -39,9 +39,6 @@ function combatListener(updateCombat) {
     updateCombat(res);
   });
 }
-// function receiveLogin(onLoginReceive) {
-//   socket.on("login", onLoginReceive);
-// }
 function userlistListener(cb) {
   console.log("Listening for User List");
   socket.on("activeUsers", res => {

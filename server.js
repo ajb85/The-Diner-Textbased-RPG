@@ -58,7 +58,6 @@ io.on("connection", socket => {
   });
 
   socket.on("events", eventData => {
-    console.log("SendingEvent: ", eventData);
     // Users send an invite/event to each other
     socket.broadcast
       .to(activeUsers[eventData.toUser].socket.id)
@@ -71,9 +70,12 @@ io.on("connection", socket => {
   socket.on("combat", combatData => {
     // Send combat data between users
     socket.broadcast
-      .to(activeUsers[combatData.toUser].id)
-      .emit("combat", combatData.message);
+      .to(activeUsers[combatData.toUser].socket.id)
+      .emit("combat", combatData);
+
+    socket.emit("combat", combatData);
   });
+  // This is a shortcut, there is a command to send back to socket
 
   socket.on("error", err => {
     // Console log errors

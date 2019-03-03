@@ -4,7 +4,7 @@ import api from "../../api.js";
 
 /* props:
 char={this.props.char}
-updateOpponent={this.props.updateOpponent}
+updateGameMode={this.props.updateGameMode}
 */
 
 export default class Userlist extends Component {
@@ -39,7 +39,7 @@ export default class Userlist extends Component {
       eventData.fromUser === this.state.challenging
     ) {
       // Challenged user accepts fight
-      this.props.updateOpponent(eventData.fromUser);
+      this.props.updateGameMode(eventData.fromUser, "fight");
     } else if (eventData.type === "fight") {
       // New challenge from a user
       aggressors.push(eventData.fromUser);
@@ -54,7 +54,6 @@ export default class Userlist extends Component {
     // User clicks the challenge button on a selected user.  The button will
     // persist and can be clicked again, which feeds "prevChal" so we can
     // clear the challenge
-    console.log("PrevChal: ", prevChal);
     if (prevChal === "unchallenge") {
       this.setState({ challenging: "" });
     } else if (prevChal === "challenge") {
@@ -102,7 +101,9 @@ export default class Userlist extends Component {
     api.sendEventToUser(aggressors[0], this.props.char.name, res);
 
     if (res === "fight") {
-      // start fight
+      // Fight accept, start fight
+      console.log("Fight accepted with: ", aggressors[0]);
+      this.props.updateGameMode(aggressors[0], "fight");
     } else if (res === "decline") {
       // User declined
       aggressors.shift();
@@ -112,6 +113,10 @@ export default class Userlist extends Component {
 
   buildUserlist = () => {
     const { selected, challenging, aggressors } = this.state;
+    let aggressor;
+    if (aggressors[0]) {
+      aggressor = aggressors[0];
+    }
 
     return this.state.userlist.map((user, index) => {
       let pClassName, dClassName;
@@ -124,7 +129,7 @@ export default class Userlist extends Component {
       if (!user.active) {
         pClassName = "inactive";
       }
-      if (user.name === aggressors[0]) {
+      if (user.name === aggressor) {
         dClassName = "aggressor";
       } else if (user.name === challenging) {
         dClassName = "challenging";

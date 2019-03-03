@@ -639,7 +639,7 @@ div.buttonsAndList div.actionButton button.challenging {
   justify-content: space-between;
   align-items: center;
 }
-.fight div.opponent div.combatLog {
+.fight div.opponent div.chatlog {
   width: 85%;
   white-space: pre-line;
   word-break: break-word;
@@ -658,11 +658,42 @@ div.buttonsAndList div.actionButton button.challenging {
   flex-direction: column;
 }
 .fight div.user div.currentWindow {
-  height: 40vh;
+  width: 100%;
+  height: 45vh;
   padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.fight div.user div.currentWindow div.selectAttack {
+  width: 95%;
+  height: 40vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.fight div.user div.currentWindow div.selectAttack button {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid white;
+  border-radius: 5px;
+  max-width: 60%;
+  width: 100%;
+  height: 10vh;
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.5s, color 0.5s;
+  font-size: 3rem;
+}
+.fight div.user div.currentWindow div.selectAttack button:hover {
+  background-color: #fff;
+  color: #000;
 }
 .fight div.user div.hud {
-  height: 9vh;
+  height: 5vh;
   max-height: 50px;
   width: 100%;
   display: flex;

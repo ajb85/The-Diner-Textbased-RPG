@@ -40,6 +40,7 @@ export default class SelectWeapon extends Component {
   }
 
   render() {
+    console.log("Select Weapon");
     const { weapons } = this.state;
     // Yes I did a Object.keys ==> map instead of for(x in y).  Yes, I did it becausae I'm tired.  Get over it
     const weaponSelection = Object.keys(this.state.weapons).map(

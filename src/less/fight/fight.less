@@ -24,7 +24,7 @@
       .flexAlign(space-between);
     }
     // "chat" log of all events
-    div.combatLog {
+    div.chatlog {
       width: 85%;
       white-space: pre-line;
       word-break: break-word;
@@ -42,11 +42,26 @@
 
     // Options given to user
     div.currentWindow {
-      height: 40vh;
+      width: 100%;
+      height: 45vh;
       padding-top: 10px;
+      .flexAlign;
+      flex-direction: column;
+
+      div.selectAttack {
+        width: 95%;
+        height: 40vh;
+        .flexAlign(space-between);
+        flex-direction: column;
+
+        button {
+          .defaultSubmitBtn(60%, 10vh);
+          font-size: 3rem;
+        }
+      }
     }
     div.hud {
-      height: 9vh;
+      height: 5vh;
       max-height: 50px;
       width: 100%;
       .flexAlign(space-between);

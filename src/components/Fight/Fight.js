@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Chatlog from "../Chatlog/Chatlog.js";
 import SelectWeapon from "./SelectWeapon.js";
 import CombatTurn from "./CombatTurn.js";
 import Blunt from "./Classes/Blunt.js";
@@ -15,104 +16,101 @@ export default class Fight extends Component {
       hp: this.props.char.hp,
       opponentReady: true,
       opponentHP: 100,
-      combatLog: [],
       turn: 0
     };
-    this.pickWeapon = this.pickWeapon.bind(this);
-    this.createWeaponClass = this.createWeaponClass.bind(this);
-    this.onCombatReceive = this.onCombatReceive.bind(this);
-    this.sendCombatMessage = this.sendCombatMessage.bind(this);
-    this.executeAttack = this.executeAttack.bind(this);
+  }
 
-    api.combatListener(this.onCombatReceive);
+  componentDidMount() {
+    api.toggleStatus(this.props.char.name);
   }
-  pickWeapon(weapon) {
+
+  pickWeapon = weapon => {
     this.setState({ weapon: this.createWeaponClass(weapon) });
-  }
-  createWeaponClass(weapon) {
+  };
+
+  createWeaponClass = weapon => {
     const { char } = this.props;
     let weaponClass;
     if (weapon.category === "str") {
       weaponClass = new Blunt(weapon);
     } else if (weapon.category === "dex") {
       weaponClass = new Sharp(weapon);
-    } else {
+    } else if (weapon.category === "intel") {
       weaponClass = new Food(weapon);
     }
-    const message = `${char.name} picks up: ${weaponClass.name}`;
-    this.sendCombatMessage(message);
+    const msgOBJ = {
+      fromUser: char.name,
+      toUser: this.props.opponent,
+      message: `picks up: ${weaponClass.name}`,
+      type: "combat"
+    };
+    this.sendCombatMessage(msgOBJ);
     return weaponClass;
-  }
-  sendCombatMessage(message) {
-    let { opponent } = this.props;
-    let { combatLog } = this.state;
-    api.sendCombat(opponent, message);
-    combatLog.push(message);
+  };
+
+  sendCombatMessage = msgOBJ => {
+    api.sendCombat(msgOBJ);
     this.setState({ turn: 0 });
-    this.setState({ combatLog });
-  }
-  onCombatReceive(message) {
-    let { combatLog, hp } = this.state;
-    combatLog.push(message);
-    if (combatLog.length > 15) {
-      combatLog.shift();
+  };
+
+  damageHP = ({ damage, fromUser }) => {
+    if (damage && fromUser !== this.props.char.name) {
+      let { hp } = this.state;
+      this.setState({ hp: hp - Number(damage) });
     }
-    const combatDamage = "It hits for ";
-    let startI = message.indexOf(combatDamage);
-    if (startI > -1) {
-      startI += combatDamage.length;
-      let dmg = "";
-      for (let i = 0; i < 2; i++) {
-        const dmgStr = message.substr(startI);
-        console.log("LF DMG", dmgStr, dmgStr[i]);
-        if (Number(dmgStr[i]).toString() === dmgStr[i]) {
-          dmg += dmgStr[i];
-        }
-      }
-      console.log("Damage found: ", dmg);
-      hp -= Number(dmg);
-    }
-    this.setState({ hp });
+    // Only events are turns so if the user received a turn, it must be
+    // theirs now
     this.setState({ turn: 1 });
-    this.setState({ combatLog });
-  }
-  executeAttack(attackOBJ) {
+  };
+
+  executeAttack = attackOBJ => {
     const { opponent, char } = this.props;
     let { opponentHP } = this.state;
-    console.log("Opponent Damage: ", attackOBJ.damage);
     opponentHP -= attackOBJ.damage;
-    const message = `${char.name} attacks ${opponent} with ${
-      attackOBJ.attackName
-    }. ${attackOBJ.message}`;
+    const message = `attacks ${opponent} with ${attackOBJ.attackName}. ${
+      attackOBJ.message
+    }`;
+
+    const msgOBJ = {
+      fromUser: char.name,
+      toUser: opponent,
+      message,
+      damage: attackOBJ.damage,
+      type: "combat"
+    };
     this.setState({ opponentHP });
-    this.sendCombatMessage(message);
-  }
+    this.sendCombatMessage(msgOBJ);
+  };
 
   render() {
+    console.log("fight.js");
     let currentWindow = [];
     let combatLog = [];
-    let self = this.props;
-    if (this.state.hp <= 0) {
-      self.changeGame(<Death />);
-    } else if (this.state.opponentHP <= 0) {
-      api.sendChat(
-        `*${this.props.char.name} stands over ${
-          this.props.opponent
-        }'s corpse as its dragged out the building.*`
-      );
-      self.changeGame("Diner");
-    }
 
-    if (this.state && this.state.combatLog && this.state.combatLog.length) {
-      combatLog = [...this.state.combatLog].map(message => <p>{message}</p>);
+    // Lose/Win conditions
+    if (this.state.hp <= 0) {
+      this.props.updateGameMode("", "death");
+    } else if (this.state.opponentHP <= 0) {
+      this.props.updateGameMode("", "chat");
+      // Send chat message
+      const chatOBJ = {
+        name: this.props.char.name,
+        message: `stands over ${
+          this.props.opponent
+        } as they are dragged out of the building.`,
+        type: "system"
+      };
+      api.sendChat(chatOBJ);
     }
 
     if (this.state && !this.state.weapon) {
+      // Pick a weapon if the client user doesn't have one
       currentWindow = [
         <p>You look around for something to use as a weapon and you find...</p>,
         <SelectWeapon pickWeapon={this.pickWeapon} char={this.props.char} />
       ];
     } else if (this.state && this.state.weapon && this.state.turn) {
+      // If client user has a weapon and its their turn, pick an attack
       currentWindow = (
         <CombatTurn
           executeAttack={this.executeAttack}
@@ -122,6 +120,7 @@ export default class Fight extends Component {
         />
       );
     } else if (this.state && this.state.weapon) {
+      // If client user has a weapon but it's not their turn, they have to wait!
       currentWindow = <p>Wait for your turn...</p>;
     }
     return (
@@ -129,9 +128,13 @@ export default class Fight extends Component {
         <div className="opponent">
           <div className="oppStats">
             <p>{this.props.opponent}</p>
-            <p>{this.state.opponentHP}hp</p>
+            <p className="str">{this.state.opponentHP}hp</p>
           </div>
-          <div className="combatLog">{combatLog}</div>
+          <Chatlog
+            context={"combat"}
+            listener={api.combatListener}
+            damageHP={this.damageHP}
+          />
         </div>
         <div className="user">
           <div className="currentWindow">{currentWindow}</div>

@@ -1,30 +1,33 @@
 import React, { Component } from "react";
+
 /*
 Props:
 char={this.props.char}
 mode={this.state.mode}
 userList={this.state.userList}
 */
-const toggleMode = Chatroom => FightMode =>
+const toggleMode = Chatroom => FightMode => Death =>
   class extends Component {
     render() {
-      if (!this.props.opponent) {
+      if (this.props.mode === "chat") {
         console.log("Loading Chat");
         return (
           <Chatroom
             char={this.props.char}
-            updateOpponent={this.props.updateOpponent}
+            updateGameMode={this.props.updateGameMode}
           />
         );
-      } else {
-        console.log("Entering Fight");
+      } else if (this.props.mode === "fight") {
+        console.log("toggleMode combat");
         return (
           <FightMode
             char={this.props.char}
             opponent={this.props.opponent}
-            updateOpponent={this.props.updateOpponent}
+            updateGameMode={this.props.updateGameMode}
           />
         );
+      } else if (this.props.mode === "death") {
+        return <Death />;
       }
     }
   };

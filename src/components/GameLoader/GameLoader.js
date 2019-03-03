@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Chatroom from "../Chatroom/Chatroom.js";
 import Fight from "../Fight/Fight.js";
+import Death from "../Fight/Death.js";
 import toggleMode from "./toggleMode.js";
 /*
 Props:
@@ -10,26 +11,22 @@ char={char}
 export default class GameLoader extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { opponent: "" };
+    this.state = { opponent: "", mode: "chat" };
   }
 
-  updateOpponent = opponent => {
-    this.setState({ opponent });
-  };
-
-  updateMode = mode => {
-    this.setState({ mode });
+  updateGameMode = (opponent, mode) => {
+    this.setState({ opponent, mode });
   };
 
   render() {
-    const Mode = toggleMode(Chatroom)(Fight);
+    const Mode = toggleMode(Chatroom)(Fight)(Death);
 
     return (
       <Mode
         char={this.props.char}
-        mode={this.state.opponent}
-        updateOpponent={this.updateOpponent}
+        opponent={this.state.opponent}
+        mode={this.state.mode}
+        updateGameMode={this.updateGameMode}
       />
     );
   }
