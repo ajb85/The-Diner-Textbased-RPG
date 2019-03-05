@@ -29,15 +29,13 @@ io.on("connection", socket => {
     broadCastMessage("chat", messageOBJ);
   });
 
-  socket.on("disconnect", name => {
-    // User disconnects, currently not working
-    console.log("User left: ", name);
-    // Possible to feed a name?
+  socket.on("disconnect", () => {
     for (let user in activeUsers) {
       if (activeUsers[user].socket === socket) {
         delete activeUsers[user];
+        console.log(`${user} has left`);
       }
-      broadCastMessage("activeUsers", Object.keys(activeUsers));
+      broadCastMessage("activeUsers", getUserlistArr());
     }
   });
 

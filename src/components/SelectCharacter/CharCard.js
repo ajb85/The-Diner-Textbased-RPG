@@ -5,8 +5,9 @@ char={this.state.chars[charNum]}
 */
 
 export default function CharCard(props) {
-  const buttonClass = getButtonClass(props.char);
-  const { name, str, dex, intel, luck } = props.char;
+  const buttonClass = getButtonClass(props.char.stats);
+  const { str, dex, intel, luck } = props.char.stats;
+  const { name } = props.char;
 
   return (
     <div className="charCard" onClick={() => props.handleSelect(props.char)}>
@@ -38,12 +39,13 @@ export default function CharCard(props) {
   );
 }
 
-function getButtonClass(char) {
-  if (char.str >= char.dex && char.str >= char.intel) {
+function getButtonClass(stats) {
+  const { str, dex, intel, luck } = stats;
+  if (str >= dex && str >= intel) {
     return "strBG";
-  } else if (char.dex >= char.str && char.dex >= char.intel) {
+  } else if (dex >= str && dex >= intel) {
     return "dexBG";
-  } else if (char.intel >= char.str && char.intel >= char.dex) {
+  } else if (intel >= str && intel >= dex) {
     return "intelBG";
   }
   // Currently not used

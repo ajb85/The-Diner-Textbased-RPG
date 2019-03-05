@@ -6,7 +6,7 @@ export default function Death() {
   }
   return (
     <div className="container death">
-      <p>You have died.</p>
+      <p style={{ marginBottom: "20px" }}>You have died.</p>
       <button onClick={() => restart()}>Drag My Corpse Outside</button>
     </div>
   );

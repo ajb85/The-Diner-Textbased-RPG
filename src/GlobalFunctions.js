@@ -9,27 +9,28 @@ function splitString(string) {
 }
 
 function getAttackObj(stats) {
-  const accRoll = getRand(0, 100);
-  let calcDMG = 0;
-  let message = "";
+  const attackOBJ = { attackName: stats.attackName };
+  attackOBJ.damage = 0;
+  attackOBJ.accRoll = getRand(0, 100);
 
-  if (accRoll >= 1 - stats.acc) {
-    message += ` It hits for `;
+  if (attackOBJ.accRoll >= 1 - stats.accuracy) {
+    attackOBJ.hit = true;
     // If the roll exceeds the required accuracy, deal damage
-    calcDMG = stats.dmg;
+    attackOBJ.damage = stats.damage;
 
     //If dealing damage, calc for a critical
-    const critRoll = getRand(0, 100);
-    if (critRoll >= 100 - stats.crit) {
-      calcDMG *= Math.floor(stats.critMulti);
-      message += `${calcDMG} with a critical strike!`;
+    attackOBJ.critRoll = getRand(0, 100);
+    if (attackOBJ.critRoll >= 100 - stats.crit) {
+      attackOBJ.damage = Math.floor(attackOBJ.damage * stats.critMulti);
+      attackOBJ.crit = true;
     } else {
-      message += `${calcDMG}.`; // No crit, end sentence
+      // no crit
     }
   } else {
-    message += ` but misses.`; // Failed acc roll
+    // no hit
   }
-  return { damage: calcDMG, attackName: stats.attackName, message: message };
+
+  return attackOBJ;
 }
 
 export default { getRand, splitString, getAttackObj };

@@ -1,10 +1,11 @@
 export default class Hero {
   constructor(attrs) {
-    this.str = attrs.str;
-    this.dex = attrs.dex;
-    this.intel = attrs.intel;
-    this.luck = attrs.luck;
+    this.stats = {
+      str: attrs.str,
+      dex: attrs.dex,
+      intel: attrs.intel,
+      luck: attrs.luck
+    };
     this.name = attrs.name;
-    this.hp = 100;
   }
 }

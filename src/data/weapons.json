@@ -1,14 +1,14 @@
 {
   "str": [
-    { "name": "Plate", "dmg": 10, "acc": 50, "crit": 10 },
-    { "name": "Spoon", "dmg": 7, "acc": 40, "crit": 5 }
+    { "name": "Plate", "damage": 10, "accuracy": 50, "critChance": 10 },
+    { "name": "Spoon", "damage": 7, "accuracy": 40, "critChance": 5 }
   ],
   "dex": [
-    { "name": "Fork", "dmg": 5, "acc": 80, "crit": 50 },
-    { "name": "Knife", "dmg": 8, "acc": 80, "crit": 70 }
+    { "name": "Fork", "damage": 5, "accuracy": 60, "critChance": 25 },
+    { "name": "Knife", "damage": 8, "accuracy": 60, "critChance": 30 }
   ],
   "intel": [
-    { "name": "Meatballs", "dmg": 3, "acc": 100, "crit": 75 },
-    { "name": "Hard Candy", "dmg": 5, "acc": 100, "crit": 85 }
+    { "name": "Meatballs", "damage": 3, "accuracy": 75, "critChance": 40 },
+    { "name": "Hard Candy", "damage": 5, "accuracy": 750, "critChance": 45 }
   ]
 }

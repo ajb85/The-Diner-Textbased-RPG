@@ -522,14 +522,6 @@ div.buttonsAndList div.users {
   height: 100vh;
   border-bottom: 1px solid white;
   overflow-y: scroll;
-}
-div.buttonsAndList div.users p {
-  cursor: pointer;
-  font-size: 2rem;
-  margin: 5px 10px;
-}
-div.buttonsAndList div.users p.inactive,
-div.buttonsAndList div.users i.inactive {
   -webkit-user-select: none;
   /* Chrome all / Safari all */
   -moz-user-select: none;
@@ -539,52 +531,57 @@ div.buttonsAndList div.users i.inactive {
   user-select: none;
   /* Likely future */
 }
-div.buttonsAndList div.users p.inactive inactive,
-div.buttonsAndList div.users i.inactive inactive {
+div.buttonsAndList div.users p {
+  cursor: pointer;
+  font-size: 2rem;
+  margin: 5px 10px;
+}
+div.buttonsAndList div.users p.inactive,
+div.buttonsAndList div.users i.inactive {
   font-style: italic;
   opacity: 0.65;
 }
-div.buttonsAndList div.users button {
+div.buttonsAndList button {
   background: transparent;
   border: none;
   color: #fff;
   font-size: 1.8rem;
   cursor: pointer;
 }
-div.buttonsAndList div.users div.aggressor,
-div.buttonsAndList div.users div.selected,
-div.buttonsAndList div.users div.challenging {
+div.buttonsAndList div.aggressor,
+div.buttonsAndList div.selected,
+div.buttonsAndList div.challenging {
   color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-div.buttonsAndList div.users div.aggressor p,
-div.buttonsAndList div.users div.selected p,
-div.buttonsAndList div.users div.challenging p {
+div.buttonsAndList div.aggressor p,
+div.buttonsAndList div.selected p,
+div.buttonsAndList div.challenging p {
   width: 40%;
 }
-div.buttonsAndList div.users div.aggressor {
+div.buttonsAndList div.aggressor {
   background-color: #2b6582;
 }
-div.buttonsAndList div.users div.selected {
+div.buttonsAndList div.selected {
   background-color: #8f96a4;
 }
-div.buttonsAndList div.users div.challenging {
+div.buttonsAndList div.challenging {
   background-color: #d65c70;
 }
-div.buttonsAndList div.users div.actionButtons {
+div.buttonsAndList div.actionButtons {
   width: 50%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 10px;
 }
-div.buttonsAndList div.actionButton {
+div.actionButton {
   width: 100%;
   height: 20vh;
 }
-div.buttonsAndList div.actionButton button {
+div.actionButton button {
   background: transparent;
   border: 1px solid white;
   font-size: 1.6rem;
@@ -594,17 +591,17 @@ div.buttonsAndList div.actionButton button {
   width: 100%;
   display: block;
 }
-div.buttonsAndList div.actionButton button.disabledButton {
+div.actionButton button.disabledButton {
   background-color: rgba(128, 128, 128, 0);
   color: #808080;
   font-style: italic;
   border: 1px solid #808080;
 }
-div.buttonsAndList div.actionButton button.activeFightButton,
-div.buttonsAndList div.actionButton button.challenging {
+div.actionButton button.activeFightButton,
+div.actionButton button.challenging {
   cursor: pointer;
 }
-div.buttonsAndList div.actionButton button.challenging {
+div.actionButton button.challenging {
   display: flex;
   justify-content: space-evenly;
   align-items: center;

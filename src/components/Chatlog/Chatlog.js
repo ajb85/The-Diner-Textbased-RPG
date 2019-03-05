@@ -30,7 +30,6 @@ export default class Chatlog extends Component {
 
   onCombatReceive = msgOBJ => {
     // Combat OBJ comes in.  Log it, deal damage if its an attack
-    const { fromUser, message, type, damage } = msgOBJ;
     let { chatlog } = this.state;
     chatlog.push(msgOBJ);
     this.setState({ chatlog: [...chatlog] });

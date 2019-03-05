@@ -40,7 +40,6 @@ export default class SelectWeapon extends Component {
   }
 
   render() {
-    console.log("Select Weapon");
     const { weapons } = this.state;
     // Yes I did a Object.keys ==> map instead of for(x in y).  Yes, I did it becausae I'm tired.  Get over it
     const weaponSelection = Object.keys(this.state.weapons).map(
@@ -50,9 +49,9 @@ export default class SelectWeapon extends Component {
             {weapons[weaponNum].name}
           </p>
           <div className="weaponStats">
-            <p>Damage: {weapons[weaponNum].dmg}</p>
-            <p>Accuracy: {weapons[weaponNum].acc}</p>
-            <p>Crit Chance: {weapons[weaponNum].crit}</p>
+            <p>Damage: {weapons[weaponNum].damage}</p>
+            <p>Accuracy: {weapons[weaponNum].accuracy}</p>
+            <p>Crit Chance: {weapons[weaponNum].critChance}</p>
             <button onClick={() => this.updateWeaponState(weaponNum)}>
               Pick Up
             </button>

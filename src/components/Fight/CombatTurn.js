@@ -13,8 +13,8 @@ export default function CombatTurn(props) {
   }
 
   // Render
-  console.log("Combat Turn");
   const attacks = getAttackMethods();
+  console.log("Weapon: ", props.weapon);
   const attackButtons = attacks.map(methodName => {
     const attackOBJ = props.weapon[methodName]();
     return (

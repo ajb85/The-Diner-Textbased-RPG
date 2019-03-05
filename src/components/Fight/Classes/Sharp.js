@@ -4,8 +4,8 @@ import gFunc from "../../../GlobalFunctions.js";
 export default class Sharp extends Weapon {
   constructor(attrs) {
     super(attrs);
-    this.critMulti = 2; //attrs.critMulti;
-    this.attributes.critMulti = this.critMulti;
+
+    this.attributes.critMulti = 2;
   }
 
   slash() {

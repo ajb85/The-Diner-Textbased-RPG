@@ -7,13 +7,18 @@ import Sharp from "./Classes/Sharp.js";
 import Food from "./Classes/Food.js";
 import Death from "./Death.js";
 import api from "../../api.js";
-// props: char, opponent, gamepage
+/*
+props:
+char,
+opponent,
+gamepage
+*/
 export default class Fight extends Component {
   constructor(props) {
     super(props);
     this.state = {
       weapon: "",
-      hp: this.props.char.hp,
+      hp: 100,
       opponentReady: true,
       opponentHP: 100,
       turn: 0
@@ -30,14 +35,13 @@ export default class Fight extends Component {
 
   createWeaponClass = weapon => {
     const { char } = this.props;
-    let weaponClass;
-    if (weapon.category === "str") {
-      weaponClass = new Blunt(weapon);
-    } else if (weapon.category === "dex") {
-      weaponClass = new Sharp(weapon);
-    } else if (weapon.category === "intel") {
-      weaponClass = new Food(weapon);
-    }
+    let weaponClasses = {
+      str: new Blunt(weapon),
+      dex: new Sharp(weapon),
+      intel: new Food(weapon)
+    };
+    let weaponClass = weaponClasses[weapon.category];
+
     const msgOBJ = {
       fromUser: char.name,
       toUser: this.props.opponent,
@@ -50,6 +54,7 @@ export default class Fight extends Component {
 
   sendCombatMessage = msgOBJ => {
     api.sendCombat(msgOBJ);
+    console.log("Turn = 0");
     this.setState({ turn: 0 });
   };
 
@@ -60,6 +65,7 @@ export default class Fight extends Component {
     }
     // Only events are turns so if the user received a turn, it must be
     // theirs now
+    console.log("Turn = 1");
     this.setState({ turn: 1 });
   };
 
@@ -67,9 +73,7 @@ export default class Fight extends Component {
     const { opponent, char } = this.props;
     let { opponentHP } = this.state;
     opponentHP -= attackOBJ.damage;
-    const message = `attacks ${opponent} with ${attackOBJ.attackName}. ${
-      attackOBJ.message
-    }`;
+    const message = this.buildAttackMessage(attackOBJ);
 
     const msgOBJ = {
       fromUser: char.name,
@@ -82,11 +86,22 @@ export default class Fight extends Component {
     this.sendCombatMessage(msgOBJ);
   };
 
-  render() {
-    console.log("fight.js");
-    let currentWindow = [];
-    let combatLog = [];
+  buildAttackMessage = attackOBJ => {
+    let message = `attacks ${this.props.opponent} with ${
+      attackOBJ.attackName
+    }.`;
+    if (attackOBJ.hit) {
+      message += ` It hits for ${attackOBJ.damage} damage`;
+      if (attackOBJ.crit) {
+        message += ` with a critical strike`;
+      }
+    } else {
+      message += " But it misses.";
+    }
+    return message;
+  };
 
+  checkEndState = () => {
     // Lose/Win conditions
     if (this.state.hp <= 0) {
       this.props.updateGameMode("", "death");
@@ -102,16 +117,18 @@ export default class Fight extends Component {
       };
       api.sendChat(chatOBJ);
     }
+  };
 
+  getCurrentWindow = () => {
     if (this.state && !this.state.weapon) {
       // Pick a weapon if the client user doesn't have one
-      currentWindow = [
+      return [
         <p>You look around for something to use as a weapon and you find...</p>,
         <SelectWeapon pickWeapon={this.pickWeapon} char={this.props.char} />
       ];
     } else if (this.state && this.state.weapon && this.state.turn) {
       // If client user has a weapon and its their turn, pick an attack
-      currentWindow = (
+      return (
         <CombatTurn
           executeAttack={this.executeAttack}
           weapon={this.state.weapon}
@@ -121,8 +138,15 @@ export default class Fight extends Component {
       );
     } else if (this.state && this.state.weapon) {
       // If client user has a weapon but it's not their turn, they have to wait!
-      currentWindow = <p>Wait for your turn...</p>;
+      return <p>Wait for your turn...</p>;
     }
+  };
+
+  render() {
+    this.checkEndState();
+
+    let currentWindow = this.getCurrentWindow();
+
     return (
       <div className="container fight">
         <div className="opponent">
@@ -141,7 +165,7 @@ export default class Fight extends Component {
           <div className="hud">
             <div className="hudVitals">
               <p>{this.props.char.name}</p>
-              <p>{this.state.hp}hp</p>
+              <p className="str">{this.state.hp}hp</p>
             </div>
             <div className="hudStats">
               <p className="str">{this.props.char.str}</p>

@@ -27,6 +27,7 @@ export default class Userlist extends Component {
   }
 
   onReceiveUserlist = userlist => {
+    this.clearDisconnectedUsersFromState();
     this.setState({ userlist });
   };
 
@@ -112,14 +113,20 @@ export default class Userlist extends Component {
   };
 
   buildUserlist = () => {
+    const getDivClass = name => {
+      if (name === aggressors[0]) {
+        return "aggressor";
+      } else if (name === challenging) {
+        return "challenging";
+      } else if (name === selected) {
+        return "selected";
+      }
+    };
     const { selected, challenging, aggressors } = this.state;
-    let aggressor;
-    if (aggressors[0]) {
-      aggressor = aggressors[0];
-    }
 
     return this.state.userlist.map((user, index) => {
-      let pClassName, dClassName;
+      let pClassName;
+      const dClassName = getDivClass(user.name);
       const btnCallbacks = {
         challenge: this.challengeUser,
         fightResponse: this.fightResponse
@@ -128,13 +135,6 @@ export default class Userlist extends Component {
       // Set classname to color DIV according to context
       if (!user.active) {
         pClassName = "inactive";
-      }
-      if (user.name === aggressor) {
-        dClassName = "aggressor";
-      } else if (user.name === challenging) {
-        dClassName = "challenging";
-      } else if (user.name === selected) {
-        dClassName = "selected";
       }
 
       return (
@@ -153,6 +153,64 @@ export default class Userlist extends Component {
     }); // .map
   }; // buildUserlist
 
+  clearDisconnectedUsersFromState = () => {
+    // Would be faster to have server send names of disconnected users
+    // then clear their names from any state.  However, given the
+    // scale of this project, this will work and shouldn't hit
+    // performance.  Plus it's much faster to implement so I'm going
+    // with it for now
+
+    // Checking to see if we can find the various users in our list of
+    // user objects.  If not present, clear them.
+    let { selected, challenging, aggressors } = this.state;
+    let foundSelect, foundChallenge;
+    const foundAggressors = [];
+
+    this.state.userlist.forEach(user => {
+      if (selected === user.name) {
+        // selected user is still connected
+        foundSelect = true;
+      }
+      if (challenging === user.name) {
+        // challenging user is still connected
+        foundChallenge = true;
+      }
+
+      aggressors.forEach((aggressor, i) => {
+        if (user === aggressor) {
+          // aggressors who are still connected
+          foundAggressors.push(i);
+        }
+      });
+
+      if (!foundSelect) {
+        // Selected user has DC'd
+        selected = "";
+      }
+      if (!foundChallenge) {
+        // Challenged user has DC
+        challenging = "";
+      }
+
+      if (foundAggressors.length < aggressors.length) {
+        foundAggressors.sort().forEach((aggIndex, i) => {
+          if (aggIndex !== i) {
+            // user at aggressors[i] has DC'd
+            // ie: aggressors =  ["Sham", "Jenterro", "Beartato"]
+            // If Jenterro has DC'd sorted foundAggressors will be
+            // [1, 3] so this will evalulate to true at 3 !== 2 thus
+            // 2 is our missing index
+            aggressors = [
+              ...aggressors.slice(0, i),
+              ...aggressors.slice(i + 1)
+            ];
+          }
+        });
+      }
+    });
+    this.setState({ selected, challenging, aggressors });
+  };
+
   render() {
     let userlist = [<p>Loading...</p>];
 
@@ -162,64 +220,3 @@ export default class Userlist extends Component {
     return <div className="users">{userlist}</div>;
   }
 }
-
-/*
-challengeUser = () => {
-  // Users can challenge others to a fight.  Challenging someone who has
-  // challenged you starts a fight.  Each user can only challenge one other
-  // user
-  const { selected, challenging, aggressors } = this.state;
-
-  // Currently you can challenge someone while someone has already
-  // challenged you.
-
-  if (selected && !challenging) {
-    // If someone is selected to be challenged but no one is currently
-    // challenged by user
-
-    // Send fight request and announce request to the chat room
-    api.sendEventToUser(selected, this.props.char.name, "fight");
-    // OBJ = {name: name, message: message, type: ("emote" || "message")}
-    const chatOBJ = {
-      name: this.props.char.name,
-      message: `has been wronged by ${selected} and demands satisfaction!`,
-      type: "system"
-    };
-    api.sendChat(chatOBJ);
-    // Add challenged user to state
-    this.setState({ challenging: selected });
-  } else if (selected === challenging) {
-    // Pressing the challenge button twice on a target cancels  the challenge
-    // and deselects the target
-    this.setState({ challenging: "" });
-    this.setState({ selected: "" });
-  } else if (aggressors.includes(challenging)) {
-    // If challenging someone who has already challenged the user, start
-    // the fight!
-  }
-};
-*/
-
-/*
-selectUser = i => {
-  // When a user clicks on another user's name, their name is highlighted
-  // and grey and buttons pop up with options to interact
-
-  let selected = "";
-
-  const name = this.state.selected;
-  const { userlist } = this.state;
-  const user = userlist[i];
-
-  if (
-    name !== this.state.selected &&
-    name !== this.props.char.name &&
-    user.active
-  ) {
-    // If a new user is selected and it isn't themselves
-    // Also, selected user is active in chat
-    selected = name;
-  }
-  this.setState({ selected });
-};
-*/
